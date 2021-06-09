@@ -1,0 +1,18 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+p{
+    padding: 0;
+    margin: 0;
+}
+
+.wrong{
+    color: red;
+    font-weight: bold;
+}
+
+.success{
+    color: red;
+    font-weight: bold;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>UPP-Rejestracja</title>
+  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+<legend style="text-align: center">Rejestracja Uzytkownika</legend>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <form name="f" th:action="@{/rejestracja}" method="post" th:object="${uzytkownikView}">
+        <div class="form-group">
+          <label for="username">Login*</label>
+          <input type="text" th:field="*{login}" class="form-control" id="username" name="username"  aria-describedby="emailHelp" placeholder="Wprowadź login" >
+          <div th:if="${#fields.hasErrors('login')}" class="alert alert-danger">
+            <p th th:errors="*{login}">Error message</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Hasło*</label>
+          <input type="password" th:field="*{haslo}" class="form-control" id="password" name="password" placeholder="Wprowadź hasło">
+          <div th:if="${#fields.hasErrors('haslo')}" class="alert alert-danger">
+            <p th:errors="*{haslo}">Error message</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="imie">Imie*</label>
+          <input type="text" th:field="*{imie}" class="form-control" id="imie" name="imie" placeholder="Wprowadź imie">
+          <div th:if="${#fields.hasErrors('imie')}" class="alert alert-danger">
+            <p th:errors="*{imie}">Error message</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emailUczelniany">Email Uczelniany*</label>
+          <input type="email" th:field="*{emailUczelniany}" class="form-control" id="emailUczelniany" name="emailUczelniany" placeholder="Wprowadź emial uczelniany">
+          <div th:if="${#fields.hasErrors('emailUczelniany')}" class="alert alert-danger">
+            <p th:errors="*{emailUczelniany}">Error message</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emailPrywatny">Email Prywatny</label>
+          <input type="email" th:field="*{emailPrywatny}" class="form-control" id="emailPrywatny" name="emailPrywatny" placeholder="Wprowadź email prywatny">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+        <small>Masz juz konto?</small>
+        <a th:href="@{/login}">Zaloguj się</a>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>
