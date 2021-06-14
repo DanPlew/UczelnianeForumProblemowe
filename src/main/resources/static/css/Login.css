@@ -1,18 +1,35 @@
-body{
-    font-family: 'Montserrat', sans-serif;
-}
-
-p{
-    padding: 0;
+*{
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
-.wrong{
-    color: red;
-    font-weight: bold;
+html{
+    scroll-behavior: smooth;
+    font-size: 15px;
 }
 
-.success{
-    color: red;
-    font-weight: bold;
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(236, 236, 236);
+}
+
+.textUFP{
+    font-size: 20px;
+}
+
+.widocznoscDuza{
+    display: block;
+}
+.widocznoscMala{
+    display: none;
+}
+
+@media (max-width: 576px) {
+    .widocznoscDuza{
+        display: none;
+    }
+    .widocznoscMala{
+        display: block;
+    }
 }

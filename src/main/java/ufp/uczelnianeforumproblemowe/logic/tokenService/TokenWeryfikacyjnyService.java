@@ -3,7 +3,9 @@ package ufp.uczelnianeforumproblemowe.logic.tokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ufp.uczelnianeforumproblemowe.jpa.models.TokenWeryfikacyjny;
+import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.TokenWeryfikacyjnyRepository;
 
 import java.time.LocalDateTime;
@@ -12,13 +14,10 @@ import java.util.UUID;
 @Service
 public class TokenWeryfikacyjnyService implements TokenWeryfikacyjnyServiceInterface {
 
-    //private static final BytesKeyGenerator GENERATOR_TOKENOW = KeyGenerators.secureRandom();
-    //private static final Charset ascii = Charset.forName("US-ASCII");
-
     @Value("${jdj.secure.token.validity}")
     private int walidacjaTokenaWSekundach;
 
-    private TokenWeryfikacyjnyRepository tokenWeryfikacyjnyRepository;
+    private final TokenWeryfikacyjnyRepository tokenWeryfikacyjnyRepository;
 
     public TokenWeryfikacyjnyService(@Autowired TokenWeryfikacyjnyRepository tokenWeryfikacyjnyRepository){
         this.tokenWeryfikacyjnyRepository = tokenWeryfikacyjnyRepository;
@@ -26,28 +25,30 @@ public class TokenWeryfikacyjnyService implements TokenWeryfikacyjnyServiceInter
 
     @Override
     public TokenWeryfikacyjny utworzTokenWeryfikacyjny() {
-        //String token = new String(Base64.encodeBase64URLSafe(GENERATOR_TOKENOW.generateKey()));
-
-        String tokenTestowy = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
 
         TokenWeryfikacyjny tokenWeryfikacyjny = new TokenWeryfikacyjny();
-        tokenWeryfikacyjny.setToken(tokenTestowy);
+        tokenWeryfikacyjny.setToken(token);
         tokenWeryfikacyjny.setDataWygasniecia(LocalDateTime.now().plusSeconds(getWalidacjaTokenaWSekundach()));
-        this.zapiszTokenWeryfikacyjny(tokenWeryfikacyjny);
+
         return tokenWeryfikacyjny;
     }
 
     @Override
-    public void zapiszTokenWeryfikacyjny(TokenWeryfikacyjny tokenWeryfikacyjny) {
+    @Transactional
+    public void zapiszTokenWeryfikacyjny(TokenWeryfikacyjny tokenWeryfikacyjny, Uzytkownik uzytkownik) {
+        tokenWeryfikacyjny.setUzytkownik(uzytkownik);
         tokenWeryfikacyjnyRepository.save(tokenWeryfikacyjny);
     }
 
     @Override
+    @Transactional
     public void usunTokenWeryfikacyjny(TokenWeryfikacyjny tokenWeryfikacyjny) {
         tokenWeryfikacyjnyRepository.removeByToken(tokenWeryfikacyjny.getToken());
     }
 
     @Override
+    @Transactional
     public TokenWeryfikacyjny znajdzToken(String token) {
         return tokenWeryfikacyjnyRepository.findByToken(token);
     }

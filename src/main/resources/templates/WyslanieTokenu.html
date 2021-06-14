@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UFP-Logowanie</title>
+  <title>UFP-Wyslanie Tokenu</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -22,9 +22,9 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" href="/login">Login <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/login">Login</a>
         <a class="nav-link" href="/rejestracja">Rejestracja</a>
-        <a class="nav-link" href="/wyslanieTokenu">Wysłanie Tokenu</a>
+        <a class="nav-link active" href="/wyslanieTokenu">Wysłanie Tokenu<span class="sr-only">(current)</span></a>
       </div>
     </div>
   </div>
@@ -34,36 +34,16 @@
   <div class="row">
     <div class="col-md-12">
 
-      <div th:if="${param.error}" class="alert alert-danger">
-        <p>Został podany nieprawidłowy login lub hasło!</p>
+      <div th:if="${successSendingToken}" th:text="${successSendingToken}" class="alert alert-success">
       </div>
 
-      <div th:if="${param.logout}" class="alert alert-success">
-        <p>Zostales wylogowany pomyślnie</p>
-      </div>
-
-      <div th:if="${successRegistrationMessage}" th:text="${successRegistrationMessage}" class="alert alert-success">
-      </div>
-
-      <div th:if="${successActivationMessage}" th:text="${successActivationMessage}" class="alert alert-success">
-      </div>
-
-      <form name="f" th:action="@{/login}" method="post">
+      <form th:action="@{/wyslanieTokenu}" method="post" th:object="${uzytkownikView}">
         <div class="form-group">
-          <label for="username">Login</label>
-          <input type="text" class="form-control p-4" id="username" name="username" aria-describedby="emailHelp" placeholder="Wprowadź login">
+          <label for="emailPrywatny">Email prywatny*</label>
+          <input type="email" th:field="*{emailPrywatny}" class="form-control" id="emailPrywatny" placeholder="Wprowadź emial prywatny">
         </div>
-        <div class="form-group">
-          <label for="password">Hasło</label>
-          <input type="password" class="form-control p-4" id="password" name="password" placeholder="Wprowadź hasło">
-        </div>
-        <button type="submit" class="btn btn-primary">Zaloguj się</button>
+        <button type="submit" class="btn btn-primary">Wyślij</button>
       </form>
-      <small>Nie masz jeszcze konta?</small>
-      <a th:href="@{/rejestracja}">Zarejestruj sie</a>
-      <br>
-      <small>Token nie doszedł?</small>
-      <a th:href="@{/wyslanieTokenu}">Wyślij ponownie</a>
     </div>
   </div>
 </div>

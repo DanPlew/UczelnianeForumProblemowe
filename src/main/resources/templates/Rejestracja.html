@@ -1,29 +1,50 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
 <head>
-  <meta charset="ISO-8859-1">
-  <title>UPP-Rejestracja</title>
-  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFP-Rejestracja</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/94badef91b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/Rejestracja.css">
+</head>
 <body>
-<legend style="text-align: center">Rejestracja Uzytkownika</legend>
-<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top">
+  <div class="container">
+    <a class="navbar-brand px-3 font-weight-bold widocznoscDuza" href="/"><i class="fas fa-university"></i> Uczelniane Forum Problemowe</a>
+    <a class="navbar-brand px-3 font-weight-bold widocznoscMala" href="/"><i class="fas fa-university"></i> UFP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/login">Login </a>
+        <a class="nav-link active" href="/rejestracja">Rejestracja <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/wyslanieTokenu">Wysłanie Tokenu</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5 pt-5">
   <div class="row">
     <div class="col-md-12">
-      <form name="f" th:action="@{/rejestracja}" method="post" th:object="${uzytkownikView}">
+      <form th:action="@{/rejestracja}" method="post" th:object="${uzytkownikView}">
         <div class="form-group">
           <label for="username">Login*</label>
-          <input type="text" th:field="*{login}" class="form-control" id="username" name="username"  aria-describedby="emailHelp" placeholder="Wprowadź login" >
+          <input type="text" th:field="*{login}" class="form-control" id="username" placeholder="Wprowadź login">
           <div th:if="${#fields.hasErrors('login')}" class="alert alert-danger">
-            <p th th:errors="*{login}">Error message</p>
+            <p th:errors="*{login}">Error message</p>
           </div>
         </div>
 
         <div class="form-group">
           <label for="password">Hasło*</label>
-          <input type="password" th:field="*{haslo}" class="form-control" id="password" name="password" placeholder="Wprowadź hasło">
+          <input type="password" th:field="*{haslo}" class="form-control" id="password" placeholder="Wprowadź hasło">
           <div th:if="${#fields.hasErrors('haslo')}" class="alert alert-danger">
             <p th:errors="*{haslo}">Error message</p>
           </div>
@@ -31,7 +52,7 @@
 
         <div class="form-group">
           <label for="imie">Imie*</label>
-          <input type="text" th:field="*{imie}" class="form-control" id="imie" name="imie" placeholder="Wprowadź imie">
+          <input type="text" th:field="*{imie}" class="form-control" id="imie" placeholder="Wprowadź imie">
           <div th:if="${#fields.hasErrors('imie')}" class="alert alert-danger">
             <p th:errors="*{imie}">Error message</p>
           </div>
@@ -39,7 +60,7 @@
 
         <div class="form-group">
           <label for="emailUczelniany">Email Uczelniany*</label>
-          <input type="email" th:field="*{emailUczelniany}" class="form-control" id="emailUczelniany" name="emailUczelniany" placeholder="Wprowadź emial uczelniany">
+          <input type="email" th:field="*{emailUczelniany}" class="form-control" id="emailUczelniany" placeholder="Wprowadź emial uczelniany">
           <div th:if="${#fields.hasErrors('emailUczelniany')}" class="alert alert-danger">
             <p th:errors="*{emailUczelniany}">Error message</p>
           </div>
@@ -47,7 +68,10 @@
 
         <div class="form-group">
           <label for="emailPrywatny">Email Prywatny</label>
-          <input type="email" th:field="*{emailPrywatny}" class="form-control" id="emailPrywatny" name="emailPrywatny" placeholder="Wprowadź email prywatny">
+          <input type="email" th:field="*{emailPrywatny}" class="form-control" id="emailPrywatny" placeholder="Wprowadź email prywatny">
+          <div th:if="${#fields.hasErrors('emailPrywatny')}" class="alert alert-danger">
+            <p th:errors="*{emailPrywatny}">Error message</p>
+          </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Zarejestruj się</button>
@@ -57,6 +81,10 @@
     </div>
   </div>
 </div>
-</body>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+</body>
 </html>
+
+<!-- Strona główna / Mój profil / Obserwowani-->

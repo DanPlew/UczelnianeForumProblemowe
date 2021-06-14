@@ -11,6 +11,8 @@ import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     Uzytkownik findByLogin(String login);
     Uzytkownik findByEmailUczelniany(String emailUczelniany);
+    Uzytkownik findByEmailPrywatny(String emailPrywatny);
+    Uzytkownik findByImie(String imie);
 
     @Transactional
     @Modifying

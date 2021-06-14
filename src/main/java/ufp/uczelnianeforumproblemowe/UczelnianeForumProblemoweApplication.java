@@ -28,10 +28,5 @@ public class UczelnianeForumProblemoweApplication {
     }
 }
 
-
-// TODO 4: Wysyłanie maila z tokenem.
 // TODO 5: Umieścić wszystkie tabele do bazy danych i stworzyć odpowiednie połączenia.
 // TODO 6: Zrobić reszte podstron.
-
-
-//TODO 7: Program nie działa ponieważ nie działa poprawnie mapowanie Token-Uzytkownik. Zrobic jeden do wiele lub jeden do jednego.

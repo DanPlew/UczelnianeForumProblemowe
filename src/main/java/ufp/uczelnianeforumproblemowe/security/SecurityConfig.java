@@ -45,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/rejestracja").permitAll()
-                .antMatchers("/wygasniecie").permitAll()
-                .antMatchers("/api/v*/registration/**").permitAll()
+                .antMatchers("/wyslanieTokenu").permitAll()
+                .antMatchers("/aktywacjaKonta").permitAll()
                 .antMatchers("/getAllUzytkownik").hasAuthority(RangaEnum.ADMINISTRATOR.name())
                 .antMatchers("/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
