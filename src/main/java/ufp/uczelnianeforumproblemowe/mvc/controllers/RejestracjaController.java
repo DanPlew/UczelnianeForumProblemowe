@@ -15,6 +15,7 @@ import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.logic.rejestracjaService.RejestracjaService;
 import ufp.uczelnianeforumproblemowe.logic.tokenService.TokenWeryfikacyjnyService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
+import ufp.uczelnianeforumproblemowe.logic.wydzialService.WydzialService;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.UzytkownikView;
 
 import javax.validation.Valid;
@@ -26,13 +27,16 @@ public class RejestracjaController {
     private final RejestracjaService rejestracjaService;
     private final UzytkownikService uzytkownikService;
     private final TokenWeryfikacyjnyService tokenWeryfikacyjnyService;
+    private final WydzialService wydzialService;
 
     public RejestracjaController(@Autowired UzytkownikService uzytkownikService,
                                  @Autowired TokenWeryfikacyjnyService tokenWeryfikacyjnyService,
-                                 @Autowired RejestracjaService rejestracjaService){
+                                 @Autowired RejestracjaService rejestracjaService,
+                                 @Autowired WydzialService wydzialService){
         this.uzytkownikService = uzytkownikService;
         this.tokenWeryfikacyjnyService = tokenWeryfikacyjnyService;
         this.rejestracjaService = rejestracjaService;
+        this.wydzialService = wydzialService;
     }
 
     @InitBinder
@@ -45,11 +49,13 @@ public class RejestracjaController {
     public String pobierzStroneRejestracji(Model model){
         UzytkownikView uzytkownikView = new UzytkownikView();
         model.addAttribute("uzytkownikView", uzytkownikView);
+        model.addAttribute("wydzialyLista", wydzialService.pobierzWszystkieWydzialy());
         return "Rejestracja";
     }
 
     @PostMapping("/rejestracja")
     public String Rejestracja(@ModelAttribute("uzytkownikView") @Valid UzytkownikView uzytkownikView, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes){
+        model.addAttribute("wydzialyLista", wydzialService.pobierzWszystkieWydzialy());
         if(bindingResult.hasErrors()){
             model.addAttribute("uzytkownikView", uzytkownikView);
             return "Rejestracja";
@@ -67,7 +73,6 @@ public class RejestracjaController {
             return "Rejestracja";
         }
 
-
         if(uzytkownikView.getEmailPrywatny() != null && uzytkownikService.sprawdzenieKontaNaPodstawieMailaPrywatnego(uzytkownikView.getEmailPrywatny())) {
             bindingResult.addError(new FieldError("uzytkownikView", "emailPrywatny", "Taki email jest już zajęty!"));
             model.addAttribute("uzytkownikView", uzytkownikView);
@@ -82,8 +87,12 @@ public class RejestracjaController {
 
         // Podwójna weryfikacja hasła 29:08
 
-        rejestracjaService.rejestracja(uzytkownikView);
-        redirectAttributes.addFlashAttribute("successRegistrationMessage","Rejestracja powiodła się, email weryfikacyjny został wysłany!");
+        try{
+            rejestracjaService.rejestracja(uzytkownikView);
+            redirectAttributes.addFlashAttribute("successRegistrationMessage","Rejestracja powiodła się, email weryfikacyjny został wysłany!");
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("failedRegistrationMessage","Coś poszło nie tak.. Nie udało się wysłać maila..");
+        }
 
         return "redirect:/login";
     }
@@ -125,12 +134,17 @@ public class RejestracjaController {
 
     @PostMapping("/wyslanieTokenu")
     public String wyslanieTokenu(@ModelAttribute("uzytkownikView") UzytkownikView uzytkownikView, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("successSendingToken","Token został wysłany na " + uzytkownikView.getEmailPrywatny());
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieMailaPrywatnego(uzytkownikView.getEmailPrywatny());
         if(uzytkownik != null){
-            TokenWeryfikacyjny tokenWeryfikacyjny = rejestracjaService.rejestracjaTokena(uzytkownik);
-            rejestracjaService.rejestracjaMaila(uzytkownik, tokenWeryfikacyjny.getToken());
+            try{
+                TokenWeryfikacyjny tokenWeryfikacyjny = rejestracjaService.rejestracjaTokena(uzytkownik);
+                rejestracjaService.rejestracjaMaila(uzytkownik, tokenWeryfikacyjny.getToken());
+                redirectAttributes.addFlashAttribute("successSendingToken","Token został wysłany na " + uzytkownikView.getEmailPrywatny());
+            }catch (Exception e){
+                redirectAttributes.addFlashAttribute("failerSendingToken","Nie udało się wysłać tokenu..");
+            }
         }
+        else redirectAttributes.addFlashAttribute("failerSendingToken","Nie ma takiego maila w naszej bazie danych..");
         return "redirect:/wyslanieTokenu";
     }
 }

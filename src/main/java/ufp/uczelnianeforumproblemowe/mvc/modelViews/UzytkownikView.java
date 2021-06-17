@@ -1,5 +1,7 @@
 package ufp.uczelnianeforumproblemowe.mvc.modelViews;
 
+import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -25,6 +27,8 @@ public class UzytkownikView implements Serializable {
     private String emailUczelniany;
 
     private String emailPrywatny;
+
+    private WydzialEnum wydzial;
 
     public String getLogin() {
         return login;
@@ -69,5 +73,13 @@ public class UzytkownikView implements Serializable {
     private String zredukowanieSpacji(String string){
         if(string != null) string = string.replaceAll("\\s+", "");
         return string;
+    }
+
+    public WydzialEnum getWydzial() {
+        return wydzial;
+    }
+
+    public void setWydzial(WydzialEnum wydzial) {
+        this.wydzial = wydzial;
     }
 }

@@ -48,6 +48,9 @@
       <div th:if="${successActivationMessage}" th:text="${successActivationMessage}" class="alert alert-success">
       </div>
 
+      <div th:if="${failedRegistrationMessage}" th:text="${failedRegistrationMessage}" class="alert alert-danger">
+      </div>
+
       <form name="f" th:action="@{/login}" method="post">
         <div class="form-group">
           <label for="username">Login</label>

@@ -1,7 +1,7 @@
 package ufp.uczelnianeforumproblemowe.jpa.models;
 
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.UzytkownikView;
-import ufp.uczelnianeforumproblemowe.security.rangi.RangaEnum;
+import ufp.uczelnianeforumproblemowe.jpa.enums.RangaEnum;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -41,6 +41,16 @@ public class Uzytkownik {
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<TokenWeryfikacyjny> tokeny;
+
+    @ManyToOne
+    @JoinColumn(name = "wydzial_id")
+    private Wydzial wydzial;
+
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Watek> watki;
+
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Temat> tematy;
 
     public Uzytkownik(){
         this.dataRejestracji = Date.valueOf(LocalDate.now());
@@ -159,5 +169,29 @@ public class Uzytkownik {
 
     public void setTokeny(List<TokenWeryfikacyjny> tokeny) {
         this.tokeny = tokeny;
+    }
+
+    public Wydzial getWydzial() {
+        return wydzial;
+    }
+
+    public void setWydzial(Wydzial wydzial) {
+        this.wydzial = wydzial;
+    }
+
+    public List<Watek> getWatki() {
+        return watki;
+    }
+
+    public void setWatki(List<Watek> watki) {
+        this.watki = watki;
+    }
+
+    public List<Temat> getTematy() {
+        return tematy;
+    }
+
+    public void setTematy(List<Temat> tematy) {
+        this.tematy = tematy;
     }
 }

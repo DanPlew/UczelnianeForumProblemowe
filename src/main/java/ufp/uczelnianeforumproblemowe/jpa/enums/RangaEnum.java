@@ -1,4 +1,4 @@
-package ufp.uczelnianeforumproblemowe.security.rangi;
+package ufp.uczelnianeforumproblemowe.jpa.enums;
 
 public enum RangaEnum {
     GOSC, ZBANOWANY, UZYTKOWNIK, MODERATOR, ADMINISTRATOR;

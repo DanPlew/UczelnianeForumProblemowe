@@ -10,8 +10,4 @@ public class LogowanieController {
         return "Login";
     }
 
-    @GetMapping
-    public String home(){
-        return "StronaGlowna";
-    }
 }

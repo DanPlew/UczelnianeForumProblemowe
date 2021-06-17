@@ -36,6 +36,8 @@
 
       <div th:if="${successSendingToken}" th:text="${successSendingToken}" class="alert alert-success">
       </div>
+      <div th:if="${failerSendingToken}" th:text="${failerSendingToken}" class="alert alert-danger">
+      </div>
 
       <form th:action="@{/wyslanieTokenu}" method="post" th:object="${uzytkownikView}">
         <div class="form-group">

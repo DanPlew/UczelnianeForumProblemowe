@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ufp.uczelnianeforumproblemowe.security.rangi.RangaEnum;
+import ufp.uczelnianeforumproblemowe.jpa.enums.RangaEnum;
 import ufp.uczelnianeforumproblemowe.security.uzytkownikDetails.UzytkownikDetailsService;
 
 @Configuration

@@ -33,6 +33,7 @@
 <div class="container mt-5 pt-5">
   <div class="row">
     <div class="col-md-12">
+
       <form th:action="@{/rejestracja}" method="post" th:object="${uzytkownikView}">
         <div class="form-group">
           <label for="username">Login*</label>
@@ -56,6 +57,14 @@
           <div th:if="${#fields.hasErrors('imie')}" class="alert alert-danger">
             <p th:errors="*{imie}">Error message</p>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="wydzial">Wydział*</label>
+          <br>
+          <select id="wydzial" th:field="*{wydzial}">
+            <option th:each="wydziall : ${wydzialyLista}" th:value="${wydziall.getNazwa()}" th:text="${wydziall.getNazwa()}"></option>
+          </select>
         </div>
 
         <div class="form-group">

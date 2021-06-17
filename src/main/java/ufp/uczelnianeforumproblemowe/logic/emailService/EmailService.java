@@ -24,21 +24,15 @@ public class EmailService implements WysylanieEmailInterface{
 
     @Override
     @Async
-    public void wyslij(String doKogo, String token){
-        try{
-//            String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-            String link = "http://localhost:8080/aktywacjaKonta?token=" + token;
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-            mimeMessageHelper.setText(zbudujMaila(doKogo, link), true);
-            mimeMessageHelper.setTo(doKogo);
-            mimeMessageHelper.setSubject("Potwierdz email z Uczelnianego Forum Problemowego");
-            mimeMessageHelper.setFrom("UczelnianeForumProblemowe@example.com");
-            mailSender.send(mimeMessage);
-        }catch (MessagingException e){
-            LOGGER.error("Nie mozna wyslac maila", e);
-            throw new IllegalStateException("Nie mozna wyslac maila");
-        }
+    public void wyslij(String doKogo, String token)throws Exception{
+        String link = "http://localhost:8080/aktywacjaKonta?token=" + token;
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+        mimeMessageHelper.setText(zbudujMaila(doKogo, link), true);
+        mimeMessageHelper.setTo(doKogo);
+        mimeMessageHelper.setSubject("Potwierdz email z Uczelnianego Forum Problemowego");
+        mimeMessageHelper.setFrom("UczelnianeForumProblemowe@example.com");
+        mailSender.send(mimeMessage);
     }
 
     @Override
