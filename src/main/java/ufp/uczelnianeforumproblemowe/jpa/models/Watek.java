@@ -22,14 +22,14 @@ public class Watek {
     @JoinColumn(name = "wydzial_id")
     private Wydzial wydzial;
 
-    @OneToMany(mappedBy="parentWatek")
-    private List<Watek> podWatki;
-
     @ManyToOne
     @JoinColumn(name = "parentWantek_id")
     private Watek parentWatek;
 
-    @OneToMany(mappedBy = "watek")
+    @OneToMany(mappedBy="parentWatek", cascade = CascadeType.REMOVE)
+    private List<Watek> podWatki;
+
+    @OneToMany(mappedBy = "watek", cascade = CascadeType.REMOVE)
     private List<Temat> tematy;
 
     public Watek(){

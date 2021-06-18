@@ -1,5 +1,6 @@
 package ufp.uczelnianeforumproblemowe.jpa.models;
 
+import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.UzytkownikView;
 import ufp.uczelnianeforumproblemowe.jpa.enums.RangaEnum;
 
@@ -51,6 +52,12 @@ public class Uzytkownik {
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<Temat> tematy;
+
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Post> posty;
+
+    @Transient
+    private WydzialEnum bierzacyWydzial;
 
     public Uzytkownik(){
         this.dataRejestracji = Date.valueOf(LocalDate.now());
@@ -193,5 +200,21 @@ public class Uzytkownik {
 
     public void setTematy(List<Temat> tematy) {
         this.tematy = tematy;
+    }
+
+    public WydzialEnum getBierzacyWydzial() {
+        return bierzacyWydzial;
+    }
+
+    public void setBierzacyWydzial(WydzialEnum bierzacyWydzial) {
+        this.bierzacyWydzial = bierzacyWydzial;
+    }
+
+    public List<Post> getPosty() {
+        return posty;
+    }
+
+    public void setPosty(List<Post> posty) {
+        this.posty = posty;
     }
 }

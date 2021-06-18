@@ -6,14 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
-import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
-import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
-import ufp.uczelnianeforumproblemowe.jpa.models.Watek;
-import ufp.uczelnianeforumproblemowe.jpa.models.Wydzial;
-import ufp.uczelnianeforumproblemowe.jpa.repositories.TematRepository;
-import ufp.uczelnianeforumproblemowe.jpa.repositories.UzytkownikRepository;
-import ufp.uczelnianeforumproblemowe.jpa.repositories.WatekRepository;
-import ufp.uczelnianeforumproblemowe.jpa.repositories.WydzialRepository;
+import ufp.uczelnianeforumproblemowe.jpa.models.*;
+import ufp.uczelnianeforumproblemowe.jpa.repositories.*;
 import ufp.uczelnianeforumproblemowe.jpa.enums.RangaEnum;
 
 @SpringBootApplication
@@ -24,7 +18,7 @@ public class UczelnianeForumProblemoweApplication {
     }
 
     @Bean
-    public CommandLineRunner init(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, WydzialRepository wydzialRepository, WatekRepository watekRepository, TematRepository tematRepository){
+    public CommandLineRunner init(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, WydzialRepository wydzialRepository, WatekRepository watekRepository, TematRepository tematRepository, PostRepository postRepository){
         return args -> {
             Wydzial wydzial1 = new Wydzial(WydzialEnum.Informatyka);
             Wydzial wydzial2 = new Wydzial(WydzialEnum.Grafika);
@@ -55,7 +49,7 @@ public class UczelnianeForumProblemoweApplication {
             watek3.setUzytkownik(uzytkownik1);
             watek3.setWydzial(wydzial1);
             watek2.setParentWatek(watek1);
-            watek3.setParentWatek(watek1);
+            watek3.setParentWatek(watek4);
             watekRepository.save(watek4);
             watekRepository.save(watek1);
             watekRepository.save(watek2);
@@ -70,11 +64,29 @@ public class UczelnianeForumProblemoweApplication {
             temat2.setWatek(watek2);
             temat2.setUzytkownik(uzytkownik1);
             tematRepository.save(temat2);
+
+            Post post1 = new Post("NIE WIEM NIE ZNAM SIE");
+            Post post2 = new Post("Test test test");
+            Post post3 = new Post("xd?");
+
+            post1.setTemat(temat1);
+            post1.setUzytkownik(uzytkownik1);
+            post2.setTemat(temat1);
+            post2.setUzytkownik(uzytkownik1);
+            post3.setTemat(temat2);
+            post3.setUzytkownik(uzytkownik2);
+
+            postRepository.save(post1);
+            postRepository.save(post2);
+            postRepository.save(post3);
         };
     }
 }
 
-// TODO 1: Zrobić strone główną.
-// TODO 2: Zrobić podstrony dla wątków. (Specjalnie dla moderatora i użytkownika.
-// TODO 3: Zrobić profil użytkownika.
-// TODO 4: Panel Administracyjny dla banowania ludzi.
+// TODO 1: Możliwość przejścia z forum jednego na drugie.
+// TODO 2: Dorobić posty i możliwość wgrania pliku.
+// TODO 3: Zrobić edycje poszczególnych encji w html ze względu na role.
+// TODO 4: Zrobić możliwość zmiany hasła.
+// TODO 5: Zrobić profil użytkownika wraz z jego dodanymi plikami?
+// TODO 6: Dorobić podstrone z obserwowanymi przez nas osobami byśmy mogli wejść na ich profil.
+// TODO 7: Zrobić możliwość zamykania tematów, by nie móc już tam postować.

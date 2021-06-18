@@ -48,7 +48,8 @@
   </div>
 
   <div class="row mt-3">
-    <h2 th:text="${uzytkownik.getWydzial().getNazwa()}"></h2>
+<!--    <h2 th:text="${uzytkownik.getWydzial().getNazwa()}"></h2>-->
+    <h2 th:text="${uzytkownik.getBierzacyWydzial()}"></h2>
   </div>
 
   <table class="table">
@@ -64,7 +65,9 @@
         <td><a th:href="@{/podWatek/{id}(id = ${watek.id})}" th:text="${watek.nazwa}"></a></td>
         <td th:text="${watek.uzytkownik.imie}"></td>
         <td th:text="${watek.dataUtworzenia}"></td>
-        <td th:if="${rola.equals('[ADMINISTRATOR]')}">xd</td>
+        <td th:if="${rola.equals('[ADMINISTRATOR]')}">
+          <a th:href="@{/podWatek/usun/{id}(id = ${watek.id})}">Usuń</a>
+        </td>
       </tr>
   </table>
 </div>

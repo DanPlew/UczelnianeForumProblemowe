@@ -5,7 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.models.Watek;
@@ -16,20 +17,22 @@ import ufp.uczelnianeforumproblemowe.logic.watekService.WatekService;
 import java.util.List;
 
 @Controller
-public class StronaGlownaController {
+public class WatekController {
 
     private final UzytkownikService uzytkownikService;
     private final WatekService watekService;
+    private final TematService tematService;
 
-    public StronaGlownaController(@Autowired UzytkownikService uzytkownikService,
-                                  @Autowired WatekService watekService,
-                                  @Autowired TematService tematService) {
+    public WatekController(@Autowired UzytkownikService uzytkownikService,
+                           @Autowired WatekService watekService,
+                           @Autowired TematService tematService) {
         this.uzytkownikService = uzytkownikService;
         this.watekService = watekService;
+        this.tematService = tematService;
     }
 
-    @GetMapping
-    public String home(Model model){
+    @GetMapping("/podWatek/{id}")
+    public String pobierzPodWatek(@PathVariable("id") long id, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String rola = auth.getAuthorities().toString();
         model.addAttribute("rola", rola);
@@ -38,14 +41,11 @@ public class StronaGlownaController {
         uzytkownik.setBierzacyWydzial(uzytkownik.getWydzial().getNazwa());
         model.addAttribute("uzytkownik", uzytkownik);
 
-        List<Watek> watekList = watekService.pobierzWszystkieWatkiGlowneNaPodstawieWydzialu(uzytkownik.getWydzial().getNazwa());
+        List<Watek> watekList = watekService.pobierzWszystkiePodWatkiNaPodstawieRodzica(uzytkownik.getWydzial().getNazwa(), id);
         model.addAttribute("watekLista", watekList);
-        return "StronaGlowna";
-    }
 
-    @GetMapping("/podWatek/usun/{id}")
-    public String usunWatek(@PathVariable("id") long id, Model model){
-        watekService.usunWatek(id);
-        return "redirect:/";
+        List<Temat> tematLista = tematService.pobierzWszystkieTematyNaPodstawieWatku(id);
+        model.addAttribute("tematLista", tematLista);
+        return "PodWatki";
     }
 }

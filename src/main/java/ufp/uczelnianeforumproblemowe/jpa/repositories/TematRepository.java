@@ -11,5 +11,5 @@ import java.util.List;
 public interface TematRepository extends JpaRepository<Temat, Long> {
 
     @Query(value = "select temat from Temat temat inner join Watek watek on watek.id = temat.watek.id where watek.id = ?1")
-    List<Temat> pobierzWszystkieTematy(long idWatku);
+    List<Temat> pobierzWszystkieTematyNaPodstawieWatku(long idWatku);
 }
