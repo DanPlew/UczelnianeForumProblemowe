@@ -56,7 +56,6 @@ public class Uzytkownik {
     @OneToMany(mappedBy = "uzytkownik")
     private List<Post> posty;
 
-    @Transient
     private WydzialEnum bierzacyWydzial;
 
     public Uzytkownik(){
@@ -183,6 +182,7 @@ public class Uzytkownik {
     }
 
     public void setWydzial(Wydzial wydzial) {
+        this.bierzacyWydzial = wydzial.getNazwa();
         this.wydzial = wydzial;
     }
 

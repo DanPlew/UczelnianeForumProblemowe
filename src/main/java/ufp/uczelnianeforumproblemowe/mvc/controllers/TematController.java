@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ufp.uczelnianeforumproblemowe.jpa.models.Post;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
-import ufp.uczelnianeforumproblemowe.jpa.models.Watek;
 import ufp.uczelnianeforumproblemowe.logic.postService.PostService;
 import ufp.uczelnianeforumproblemowe.logic.tematService.TematService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
@@ -33,7 +32,7 @@ public class TematController {
     }
 
     @GetMapping("/temat/{id}")
-    public String pobierzTemat(@PathVariable("id") long id, Model model){
+    public String pobierzTematIZwrocTemat(@PathVariable("id") long id, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String rola = auth.getAuthorities().toString();
         model.addAttribute("rola", rola);

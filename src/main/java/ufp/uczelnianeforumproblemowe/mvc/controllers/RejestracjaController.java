@@ -56,6 +56,7 @@ public class RejestracjaController {
     @PostMapping("/rejestracja")
     public String Rejestracja(@ModelAttribute("uzytkownikView") @Valid UzytkownikView uzytkownikView, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes){
         model.addAttribute("wydzialyLista", wydzialService.pobierzWszystkieWydzialy());
+
         if(bindingResult.hasErrors()){
             model.addAttribute("uzytkownikView", uzytkownikView);
             return "Rejestracja";
@@ -97,6 +98,29 @@ public class RejestracjaController {
         return "redirect:/login";
     }
 
+    @GetMapping("/wyslanieTokenu")
+    public String pobierzStroneWyslanieTokenu(Model model){
+        UzytkownikView uzytkownikView = new UzytkownikView();
+        model.addAttribute("uzytkownikView", uzytkownikView);
+        return "WyslanieTokenu";
+    }
+
+    @PostMapping("/wyslanieTokenu")
+    public String wyslanieTokenu(@ModelAttribute("uzytkownikView") UzytkownikView uzytkownikView, RedirectAttributes redirectAttributes){
+        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieMailaPrywatnego(uzytkownikView.getEmailPrywatny());
+        if(uzytkownik != null){
+            try{
+                TokenWeryfikacyjny tokenWeryfikacyjny = rejestracjaService.rejestracjaTokena(uzytkownik);
+                rejestracjaService.rejestracjaMaila(uzytkownik, tokenWeryfikacyjny.getToken());
+                redirectAttributes.addFlashAttribute("successSendingToken","Token został wysłany na " + uzytkownikView.getEmailPrywatny());
+            }catch (Exception e){
+                redirectAttributes.addFlashAttribute("failerSendingToken","Nie udało się wysłać tokenu..");
+            }
+        }
+        else redirectAttributes.addFlashAttribute("failerSendingToken","Nie ma takiego maila w naszej bazie danych..");
+        return "redirect:/wyslanieTokenu";
+    }
+
     @GetMapping("/aktywacjaKonta")
     public String aktywacjaKontaPrzezLink(@RequestParam("token") String token, Model model, RedirectAttributes redirectAttributes){
         TokenWeryfikacyjny tokenWeryfikacyjny = tokenWeryfikacyjnyService.znajdzToken(token);
@@ -123,29 +147,6 @@ public class RejestracjaController {
             }
         }
         return "AktywacjaWiadomosc";
-    }
-
-    @GetMapping("/wyslanieTokenu")
-    public String pobierzStroneWyslanieTokenu(Model model){
-        UzytkownikView uzytkownikView = new UzytkownikView();
-        model.addAttribute("uzytkownikView", uzytkownikView);
-        return "WyslanieTokenu";
-    }
-
-    @PostMapping("/wyslanieTokenu")
-    public String wyslanieTokenu(@ModelAttribute("uzytkownikView") UzytkownikView uzytkownikView, RedirectAttributes redirectAttributes){
-        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieMailaPrywatnego(uzytkownikView.getEmailPrywatny());
-        if(uzytkownik != null){
-            try{
-                TokenWeryfikacyjny tokenWeryfikacyjny = rejestracjaService.rejestracjaTokena(uzytkownik);
-                rejestracjaService.rejestracjaMaila(uzytkownik, tokenWeryfikacyjny.getToken());
-                redirectAttributes.addFlashAttribute("successSendingToken","Token został wysłany na " + uzytkownikView.getEmailPrywatny());
-            }catch (Exception e){
-                redirectAttributes.addFlashAttribute("failerSendingToken","Nie udało się wysłać tokenu..");
-            }
-        }
-        else redirectAttributes.addFlashAttribute("failerSendingToken","Nie ma takiego maila w naszej bazie danych..");
-        return "redirect:/wyslanieTokenu";
     }
 }
 

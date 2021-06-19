@@ -1,5 +1,7 @@
 package ufp.uczelnianeforumproblemowe.jpa.models;
 
+import ufp.uczelnianeforumproblemowe.mvc.modelViews.WatekView;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
