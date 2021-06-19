@@ -29,7 +29,6 @@ public class StronaGlownaController {
 
     @GetMapping
     public String home(Model model){
-
         // Do pokazywania odpowiednich elementów na końcie admina i moderatora
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String rola = auth.getAuthorities().toString();
@@ -37,14 +36,13 @@ public class StronaGlownaController {
 
         // Do pokazania info na temat uzytkownika
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
-//        uzytkownik.setBierzacyWydzial(uzytkownik.getWydzial().getNazwa());
         model.addAttribute("uzytkownik", uzytkownik);
 
         // Pokazanie watkow glownych na podstawie ostatnio odwiedzanego forum.
         List<Watek> watekList = watekService.pobierzWszystkieWatkiGlowneNaPodstawieWydzialu(uzytkownik.getBierzacyWydzial());
         model.addAttribute("watekLista", watekList);
 
-        // Nie ma na stronie glownej tematow
+        // Nie ma na stronie glownej tematow. Dzięki temu również sprawdzamy czy jesteśmy na głównej stronie czy też w wątkach.
         List<Temat> tematLista = null;
         model.addAttribute("tematLista", tematLista);
 

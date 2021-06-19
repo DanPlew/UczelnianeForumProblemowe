@@ -20,4 +20,19 @@ public class TematService implements TematServiceInterface{
     public List<Temat> pobierzWszystkieTematyNaPodstawieWatku(long idWatku) {
         return tematRepository.pobierzWszystkieTematyNaPodstawieWatku(idWatku);
     }
+
+    @Override
+    public void zapiszTemat(Temat temat){
+        tematRepository.save(temat);
+    }
+
+    @Override
+    public void usunTemat(Temat temat) {
+        tematRepository.delete(temat);
+    }
+
+    @Override
+    public Temat znajdzTematPoId(long id) {
+        return tematRepository.findById(id).orElse(null);
+    }
 }

@@ -1,9 +1,15 @@
 package ufp.uczelnianeforumproblemowe.mvc.modelViews;
 
-public class WatekView {
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
+public class WatekView implements Serializable {
 
     private long id;
+
+    @Size(max = 30, message ="Nazwa musi zawierac do 30 znaków!")
     private String nazwa;
+
     private long idRodzica;
 
     public WatekView(){}

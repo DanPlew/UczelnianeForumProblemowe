@@ -66,34 +66,37 @@
 
       <!-- ALERT DOTYCZĄCY BŁĘDÓW PODCZAS WPROWADZANIA DANYCH -->
       <!-- ALERTY -->
-      <div th:if="${wrongIdWatek}" th:text="${wrongIdWatek}" class="alert alert-danger"></div>
-      <div th:if="${wrongIdRodzicaWatek}" th:text="${wrongIdRodzicaWatek}" class="alert alert-danger"></div>
+      <div th:if="${wrongIdTemat}" th:text="${wrongIdTemat}" class="alert alert-danger"></div>
+      <div th:if="${wrongIdRodzicaTemat}" th:text="${wrongIdRodzicaTemat}" class="alert alert-danger"></div>
 
-      <!-- WYŚWIETLENIE DANYCH EDYTOWANEGO WĄTKU -->
-      <!-- WATEK -->
+      <!-- WYŚWIETLENIE DANYCH EDYTOWANEGO TEMATU -->
+      <!-- TEMAT -->
       <label>Aktualne dane:</label>
       <br>
-      <span>Id:</span><span th:text="${watek.getId()}"></span><br>
-      <span>Nazwa:</span><span th:text="${watek.getNazwa()}"></span><br>
-      <span>Data utworzenia:</span><span th:text="${watek.getDataUtworzenia()}"></span><br>
-      <span>Twórca:</span><span th:text="${watek.getUzytkownik().getImie()}"></span><br>
-      <span th:if="${watek.parentWatek != null}">Watek:</span><span th:if="${watek.parentWatek != null}" th:text="${watek.parentWatek.getNazwa()}"></span>
+      <span>Id:</span><span th:text="${temat.getId()}"></span><br>
+      <span>Nazwa:</span><span th:text="${temat.getNazwa()}"></span><br>
+      <span>Data utworzenia:</span><span th:text="${temat.getDataUtworzenia()}"></span><br>
+      <span>Twórca:</span><span th:text="${temat.getUzytkownik().getImie()}"></span><br>
+      <span>Watek:</span><span  th:text="${temat.getWatek().getNazwa()}"></span>
       <br>
 
       <!-- FORMULARZ WPROWADZANIA ZMIAN W WYBRANYM WĄTKU -->
-      <!-- WATEKVIEW -->
-      <form th:action="@{/watek/update}" method="post" th:object="${watekView}">
+      <!-- TEMATVIEW -->
+      <form th:action="@{/temat/update}" method="post" th:object="${tematView}">
         <div class="form-group">
-          <input type="number" th:name="id" th:value="${watek.getId()}" class="d-none" id="id">
+          <input type="number" th:name="id" th:value="${temat.getId()}" class="d-none" id="id">
           <label>Nowa nazwa:</label>
-          <div th:if="${wrongNameForWatek}" th:text="${wrongNameForWatek}" class="alert alert-danger"></div>
-          <input type="text" th:field="*{nazwa}" class="form-control" id="nazwa" placeholder="Nowa nazwa Watku">
+<!--          <div th:if="${wrongNameForTemat}" th:text="${wrongNameForTemat}" class="alert alert-danger"></div>-->
+          <input type="text" th:field="*{nazwa}" class="form-control" id="nazwa" placeholder="Nowa nazwa Tematu">
+          <br>
+
+          <label>Nowy opis</label>
+          <input type="text" th:field="*{opis}" class="form-control" id="opis" placeholder="Nowy opis Tematu">
           <br>
 
           <!-- WSZYSTKIEWATKI, WATEK -->
-          <select th:if="${watek.getParentWatek() != null}" th:field="*{idRodzica}">
+          <select th:field="*{idRodzica}">
             <option value="0">Nie zmieniaj lokalizacji</option>
-            <option value="-1">Na strone główną</option>
             <option th:each="watekk : ${wszystkieWatki}" th:value="${watekk.getId()}" th:text="${watekk.getNazwa()}"></option>
           </select>
         </div>
@@ -102,11 +105,8 @@
           <div class="col-6">
             <button type="submit" class="btn btn-primary">Zapisz</button>
           </div>
-          <!-- PRZYCISK POWROTU DO MIEJSCA Z KTÓREGO CHCIELIŚMY EDYTOWAĆ WĄTEK -->
-          <!-- WATEK -->
           <div class="col-6 row justify-content-end">
-            <a th:if="${watek.getParentWatek() == null}" href="/" class="btn btn-primary">Wróć</a>
-            <a th:if="${watek.getParentWatek() != null}" th:href="@{'/watek/' + ${watek.getParentWatek().getId()}}" class="btn btn-primary">Wróć</a>
+            <a th:href="@{'/watek/' + ${temat.getWatek().getId()}}" class="btn btn-primary">Wróć</a>
           </div>
         </div>
       </form>

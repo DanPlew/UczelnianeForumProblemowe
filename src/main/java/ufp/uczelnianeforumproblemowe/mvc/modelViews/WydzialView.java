@@ -2,7 +2,9 @@ package ufp.uczelnianeforumproblemowe.mvc.modelViews;
 
 import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 
-public class WydzialView {
+import java.io.Serializable;
+
+public class WydzialView implements Serializable {
 
     private WydzialEnum wydzialEnum;
 
