@@ -12,6 +12,8 @@ import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.models.Watek;
 import ufp.uczelnianeforumproblemowe.jpa.models.Wydzial;
+import ufp.uczelnianeforumproblemowe.jpa.repositories.WatekProcedureRepository;
+import ufp.uczelnianeforumproblemowe.logic.postService.PostService;
 import ufp.uczelnianeforumproblemowe.logic.tematService.TematService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
 import ufp.uczelnianeforumproblemowe.logic.watekService.WatekService;
@@ -20,6 +22,7 @@ import ufp.uczelnianeforumproblemowe.mvc.modelViews.TematView;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.WatekView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,15 +32,21 @@ public class WatekController {
     private final WatekService watekService;
     private final TematService tematService;
     private final WydzialService wydzialService;
+    private final WatekProcedureRepository watekProcedureRepository;
+    private final PostService postService;
 
     public WatekController(@Autowired UzytkownikService uzytkownikService,
                            @Autowired WatekService watekService,
                            @Autowired TematService tematService,
-                           @Autowired WydzialService wydzialService) {
+                           @Autowired WydzialService wydzialService,
+                           @Autowired WatekProcedureRepository watekProcedureRepository,
+                           @Autowired PostService postService) {
         this.uzytkownikService = uzytkownikService;
         this.watekService = watekService;
         this.tematService = tematService;
         this.wydzialService = wydzialService;
+        this.watekProcedureRepository = watekProcedureRepository;
+        this.postService = postService;
     }
 
     @GetMapping("/watek/{id}")
@@ -55,9 +64,18 @@ public class WatekController {
         List<Watek> watekList = watekService.pobierzWszystkiePodWatkiNaPodstawieRodzica(uzytkownik.getBierzacyWydzial(), id);
         model.addAttribute("watekLista", watekList);
 
+        // Pokazanie liczby podwątków danego wątku
+        List<Integer> liczbaPodwatkow = new ArrayList<>();
+        watekList.forEach(watek -> liczbaPodwatkow.add(watekProcedureRepository.pobierzWszystkiePodwatki(watek.getId()).get(0).intValue()));
+        model.addAttribute("liczbaPodwatkow", liczbaPodwatkow);
+
         // Pokazanie tematów danego wątku
         List<Temat> tematLista = tematService.pobierzWszystkieTematyNaPodstawieWatku(id);
         model.addAttribute("tematLista", tematLista);
+
+        List<Integer> liczbaPostow = new ArrayList<>();
+        tematLista.forEach(temat -> liczbaPostow.add(postService.pobierzWszystkiePostyNaPodstawieTematu(temat.getId()).size()));
+        model.addAttribute("liczbaPostow", liczbaPostow);
 
         // Dodawanie watku
         WatekView watekView = new WatekView();
@@ -72,14 +90,16 @@ public class WatekController {
         // Opcja cofania, potrzebny był nam id rodzica nadwądku by się cofnąć.
         WatekView opcjaPowrotu = new WatekView();
         long idCofanie;
+        Watek watek = watekService.znajdzWatekNaPodstawieId(id);
         if(watekService.znajdzWatekNaPodstawieId(id).getParentWatek() != null){
-            idCofanie = watekService.znajdzWatekNaPodstawieId(id).getParentWatek().getId();
+            idCofanie = watek.getParentWatek().getId();
             opcjaPowrotu.setIdRodzica(idCofanie);
         }
         else{
             idCofanie = -1;
             opcjaPowrotu.setIdRodzica(idCofanie);
         }
+        opcjaPowrotu.setNazwaRodzica(watek.getNazwa());
         model.addAttribute("opcjaPowrotuWatekView", opcjaPowrotu);
 
         return "Index";

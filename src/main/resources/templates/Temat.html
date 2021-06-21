@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
-      xmlns:c="http://www.w3.org/1999/XSL/Transform">
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,22 +10,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/94badef91b.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/css/StronaGlowna.css">
-
-
+  <link rel="stylesheet" href="/css/Index.css">
 </head>
+
 <body>
+<!-- NAWIGACJA -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top">
   <div class="container">
+    <!-- LOGO Z NAZWĄ -->
     <a class="navbar-brand px-3 font-weight-bold widocznoscDuza" href="/"><i class="fas fa-university"></i> Uczelniane Forum Problemowe</a>
     <a class="navbar-brand px-3 font-weight-bold widocznoscMala" href="/"><i class="fas fa-university"></i> UFP</a>
+    <!-- PRZYCISK DO ROZWIJANIA OPCJI GDY EKRAN JEST MAŁY -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- OPCJE FORUM -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="#">Profil </a>
-        <a class="nav-link" href="#">Forum</a>
+        <a class="nav-link" href="/zmianaForum">Forum</a>
         <a class="nav-link" href="#">Moje posty</a>
         <a class="nav-link" href="/logout">Wyloguj</a>
       </div>
@@ -34,39 +37,83 @@
   </div>
 </nav>
 
+<!-- ELEMENTY POD NAWIGACJĄ -->
 <div class="container mt-5 pt-4">
 
-  <div class="row justify-content-sm-start justify-content-md-end">
-    <div class="col-sm col-md-3">
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- UZYTKOWNIK -->
+  <div class="row justify-content-end">
+    <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getLogin()}"></span>
     </div>
-    <div class="col-sm col-md-3">
+    <div class="col-auto ml-1">
       <i class="fas fa-user-tag"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getRanga()}"></span>
     </div>
   </div>
 
-  <div class="row mt-3">
-    <h2 th:text="${uzytkownik.getBierzacyWydzial()}"></h2>
+  <!-- BIERZĄCE FORUM KTÓRE PRZEGLĄDA UŻYTKOWNIK -->
+  <!-- UZYTKOWNIK -->
+  <div class="row">
+    <div class="col">
+      <p class="navbar-brand font-weight-bold" th:text="${'Wydział ' + uzytkownik.getBierzacyWydzial()}"></p>
+    </div>
   </div>
 
-  <table class="table">
-    <tr>
-      <th>Id</th>
-      <th>Wiadomosc</th>
-      <th>Twórca</th>
-      <th>Data Utworzenia</th>
-      <th th:if="${rola.equals('[ADMINISTRATOR]')}">Edycja</th>
-    </tr>
-    <tr th:each="post,i : ${postLista}">
-      <td th:text="${i.index+1}"></td>
-      <td th:text="${post.wiadomosc}"></td>
-      <td th:text="${post.uzytkownik.imie}"></td>
-      <td th:text="${post.dataUtworzenia}"></td>
-      <td th:if="${rola.equals('[ADMINISTRATOR]')}">xd</td>
-    </tr>
-  </table>
+
+  <!-- OBRAMOWANIE -->
+  <div class="border rounded p-2">
+
+    <!-- AKTUALNY WĄTEK -->
+    <div class="row mt-2">
+      <div class="col">
+        <p class="navbar-brand font-weight-bold" th:text="${'Wątek - ' + biezacyTemat.getWatek().getNazwa() + ' - Temat - ' + biezacyTemat.getNazwa()}"></p>
+      </div>
+      <!-- PRZYCISK COFANIA -->
+      <!-- TEMATLISTA, OPCJAPOWROTUWATEKVIEW -->
+      <div class="col-auto">
+        <a class="btn btn-info btn-sm" th:object="${opcjaPowrotuWatekView}" th:href="@{/watek/{id}(id = ${biezacyTemat.getWatek().getId()})}">Wróć</a>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+      <tr class="thead-dark">
+        <th scope="col">Eska</th>
+        <th scope="col">Data utworzenia</th>
+        <th scope="col">Wiadomosc</th>
+        <th scope="col">Plik</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="post,i : ${postLista}">
+        <td><a th:href="@{/profil/{id}(id = ${post.uzytkownik.id})}" th:text="${post.getUzytkownik().getLogin()}"></a></td>
+        <td th:text="${post.getDataUtworzenia()}"></td>
+        <td th:text="${post.getWiadomosc()}"></td>
+        <td><a th:if="${post.getPlik() != null}" th:href="@{/plik/pobierz/{id}(id = ${post.getPlik().getId()})}" th:text="${post.plik.getNazwa()}"></a></td>
+        <td th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]') or post.uzytkownik.login.equals(uzytkownik.login)}">
+          <a th:href="@{/post/delete/{id}(id = ${post.id})}">Usuń</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <form class="mt-3" th:action="@{/post/add}" method="post" th:object="${postView}">
+      <div class="form-group">
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{wiadomosc}"></textarea>
+        <select th:field="*{idPliku}">
+          <option value="0">Bez pliku</option>
+          <option th:each="plik : ${pliki}" th:value="${plik.id}" th:text="${plik.getNazwa()}"></option>
+        </select>
+        <input class="d-none" type="text" th:value="${biezacyTemat.getId()}" th:name="idTematu">
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
+    </form>
+
+  </div>
+
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>

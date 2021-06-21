@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
 <!-- NAWIGACJA -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top">
   <div class="container">
@@ -29,7 +28,7 @@
     <!-- OPCJE FORUM -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="#">Profil </a>
+        <a class="nav-link" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil </a>
         <a class="nav-link" href="/zmianaForum">Forum</a>
         <a class="nav-link" href="#">Moje posty</a>
         <a class="nav-link" href="/logout">Wyloguj</a>
@@ -43,12 +42,12 @@
 
   <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
   <!-- UZYTKOWNIK -->
-  <div class="row justify-content-sm-start justify-content-md-end">
-    <div class="col-sm col-md-3">
+  <div class="row justify-content-end">
+    <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getLogin()}"></span>
     </div>
-    <div class="col-sm col-md-3">
+    <div class="col-auto ml-1">
       <i class="fas fa-user-tag"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getRanga()}"></span>
     </div>
@@ -56,25 +55,41 @@
 
   <!-- BIERZĄCE FORUM KTÓRE PRZEGLĄDA UŻYTKOWNIK -->
   <!-- UZYTKOWNIK -->
-  <div class="row mt-3">
-    <h2 th:text="${uzytkownik.getBierzacyWydzial()}"></h2>
+  <div class="row">
+    <div class="col">
+      <p class="navbar-brand font-weight-bold" th:text="${'Wydział ' + uzytkownik.getBierzacyWydzial()}"></p>
+    </div>
   </div>
 
-  <!-- PRZYCISK COFANIA JEŚLI WEJDZIEMY W DALSZE WĄTKI -->
-  <!-- TEMATLISTA, OPCJAPOWROTUWATEKVIEW -->
-  <div th:if="${tematLista != null}">
-    <a th:object="${opcjaPowrotuWatekView}" th:if="${opcjaPowrotuWatekView.idRodzica != -1}" th:href="@{/watek/{id}(id = ${opcjaPowrotuWatekView.idRodzica})}">Wróć</a>
-    <a th:object="${opcjaPowrotuWatekView}" th:if="${opcjaPowrotuWatekView.idRodzica == -1}" href="/">Wróć</a>
+
+  <!-- OBRAMOWANIE -->
+  <div class="border rounded p-2">
+
+  <!-- AKTUALNY WĄTEK -->
+  <div class="row mt-2">
+    <div class="col">
+      <p class="navbar-brand font-weight-" th:if="${tematLista == null}" th:text="${'Strona Główna'}"></p>
+      <p class="navbar-brand font-weight-bold" th:if="${tematLista != null}" th:text="${'Wątek - ' + opcjaPowrotuWatekView.getNazwaRodzica()}"></p>
+    </div>
+    <!-- PRZYCISK COFANIA JEŚLI WEJDZIEMY W DALSZE WĄTKI -->
+    <!-- TEMATLISTA, OPCJAPOWROTUWATEKVIEW -->
+    <div class="col-auto">
+      <div th:if="${tematLista != null}">
+        <a class="btn btn-info btn-sm" th:object="${opcjaPowrotuWatekView}" th:if="${opcjaPowrotuWatekView.idRodzica != -1}" th:href="@{/watek/{id}(id = ${opcjaPowrotuWatekView.idRodzica})}">Wróć</a>
+        <a class="btn btn-info btn-sm" th:object="${opcjaPowrotuWatekView}" th:if="${opcjaPowrotuWatekView.idRodzica == -1}" href="/">Wróć</a>
+      </div>
+    </div>
   </div>
 
   <!-- WYŚWIETLENIE WĄTKÓW W TABELI -->
   <!-- ROLA -->
   <table class="table">
-    <tr>
+    <tr class="thead-dark">
       <th>Id</th>
       <th>Nazwa</th>
       <th>Twórca</th>
       <th>Data Utworzenia</th>
+      <th>Podwątki</th>
       <th th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]')}">Edycja</th>
     </tr>
 
@@ -82,8 +97,9 @@
     <tr th:each="watek,i : ${watekLista}">
       <td th:text="${i.index+1}"></td>
       <td><a th:href="@{/watek/{id}(id = ${watek.id})}" th:text="${watek.nazwa}"></a></td>
-      <td th:text="${watek.uzytkownik.imie}"></td>
+      <td><a th:href="@{/profil/{id}(id = ${watek.uzytkownik.id})}" th:text="${watek.uzytkownik.imie}"></a></td>
       <td th:text="${watek.dataUtworzenia}"></td>
+      <td th:text="${liczbaPodwatkow.get(i.index)}"></td>
       <td th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]')}">
         <a th:href="@{/watek/update/{id}(id = ${watek.id})}">Edytuj</a>
         <a th:href="@{/watek/delete/{id}(id = ${watek.id})}">Usuń</a>
@@ -97,31 +113,40 @@
     <div class="form-group">
       <label for="nazwa">Dodaj nowy watek:</label>
       <div th:if="${failedToAddWatek}" th:text="${failedToAddWatek}" class="alert alert-danger"></div>
-      <input type="text" th:field="*{nazwa}" class="form-control" id="nazwa" placeholder="Wprowadź nazwe">
+      <input class="form-control form-control-sm" type="text" th:field="*{nazwa}" id="nazwa" placeholder="Wprowadź nazwe">
       <input class="d-none" type="text" th:value="${watekView.idRodzica}" th:name="idRodzica">
     </div>
-    <button type="submit" class="btn btn-primary">Dodaj</button>
+    <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
   </form>
+  </div>
+
+
+  <!-- OBRAMOWANIE -->
+  <div th:if="${tematLista != null}" class="border rounded p-2 mt-5">
 
   <!-- WYŚWIETLANIE TEMATÓW PODPIĘTYCH DO PRZEGLĄDANEGO WĄTKU -->
   <!-- TEMATLISTA -->
-  <table class="table mt-5" th:if="${tematLista != null}">
-    <tr>
+  <p class="navbar-brand font-weight-bold">Tematy</p>
+  <table class="table">
+    <tr class="thead-dark">
       <th>Id</th>
       <th>Nazwa</th>
       <th>Twórca</th>
       <th>Data Utworzenia</th>
+      <th>Posty</th>
       <th>Opis</th>
+<!--      <th th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]') or temat.uzytkownik.login.equals(uzytkownik.login)}">Edycja</th>-->
     </tr>
 
     <!-- TEMATLISTA -->
     <tr th:each="temat,i : ${tematLista}">
       <td th:text="${i.index+1}"></td>
       <td><a th:href="@{/temat/{id}(id = ${temat.id})}" th:text="${temat.nazwa}"></a></td>
-      <td th:text="${temat.uzytkownik.imie}"></td>
+      <td><a th:href="@{/profil/{id}(id = ${temat.uzytkownik.id})}" th:text="${temat.uzytkownik.imie}"></a></td>
       <td th:text="${temat.dataUtworzenia}"></td>
+      <td th:text="${liczbaPostow.get(i.index)}"></td>
       <td th:text="${temat.opis}"></td>
-      <td th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]')}">
+      <td th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]') or temat.uzytkownik.login.equals(uzytkownik.login)}">
         <a th:href="@{/temat/update/{id}(id = ${temat.id})}">Edytuj</a>
         <a th:href="@{/temat/delete/{id}(id = ${temat.id})}">Usuń</a>
       </td>
@@ -130,16 +155,17 @@
 
   <!-- FORMULARZ DODAWANIA NOWYCH TEMATÓW JEŚLI TO NIE SĄ WĄTKI GŁÓWNE -->
   <!-- ROLA, TEMATLISTA, TEMATVIEW -->
-  <form th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]') and tematLista != null}" th:action="@{/temat/add}" method="post" th:object="${tematView}">
+  <form th:action="@{/temat/add}" method="post" th:object="${tematView}">
     <div class="form-group">
       <label>Dodaj nowy Temat:</label>
       <div th:if="${wrongNameForTemat}" th:text="${wrongNameForTemat}" class="alert alert-danger"></div>
-      <input type="text" th:field="*{nazwa}" class="form-control" placeholder="Wprowadź nazwe">
-      <input type="text" th:field="*{opis}" class="form-control" placeholder="Wprowadź opis">
+      <input type="text" th:field="*{nazwa}" class="form-control form-control-sm" placeholder="Wprowadź nazwe">
+      <input type="text" th:field="*{opis}" class="form-control form-control-sm" placeholder="Wprowadź opis">
       <input class="d-none" type="text" th:field="*{idRodzica}">
     </div>
-    <button type="submit" class="btn btn-primary">Dodaj</button>
+    <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
   </form>
+  </div>
 
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

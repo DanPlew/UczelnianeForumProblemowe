@@ -52,4 +52,9 @@ public class WatekService implements WatekServiceInterface{
         Watek watek = znajdzWatekNaPodstawieId(id);
         if(watek != null) watekRepository.delete(watek);
     }
+
+    @Override
+    public Integer pobierzWszystkieWatkiNaPodstawieWydzialu(WydzialEnum wydzialEnum) {
+        return watekRepository.pobierzWszystkieWatkiNaPodstawieWydzialu(wydzialEnum);
+    }
 }

@@ -2,6 +2,7 @@ package ufp.uczelnianeforumproblemowe.logic.uzytkownikService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.UzytkownikRepository;
 
@@ -36,6 +37,15 @@ public class UzytkownikService implements UzytkownikServiceInterface ,Sprawdzeni
 
     public Uzytkownik znajdzUzytkownikaNaPodstawieMailaPrywatnego(String emailPrywatny){
         return uzytkownikRepository.findByEmailPrywatny(emailPrywatny);
+    }
+
+    public Uzytkownik znajdzUzytkownikaNaPodstawieId(long id){
+        return uzytkownikRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum) {
+        return uzytkownikRepository.pobierzWszystkichUzytkownikowNaPodstawieWydzialu(wydzialEnum);
     }
 
     @Override

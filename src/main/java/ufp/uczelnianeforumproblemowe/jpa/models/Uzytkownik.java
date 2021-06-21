@@ -23,6 +23,8 @@ public class Uzytkownik {
 
     private String imie;
 
+    private String opis;
+
     @Enumerated(EnumType.ORDINAL)
     private RangaEnum ranga;
 
@@ -55,6 +57,9 @@ public class Uzytkownik {
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<Post> posty;
+
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Plik> pliki;
 
     private WydzialEnum bierzacyWydzial;
 
@@ -216,5 +221,21 @@ public class Uzytkownik {
 
     public void setPosty(List<Post> posty) {
         this.posty = posty;
+    }
+
+    public String getOpis() {
+        return opis;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public List<Plik> getPliki() {
+        return pliki;
+    }
+
+    public void setPliki(List<Plik> pliki) {
+        this.pliki = pliki;
     }
 }

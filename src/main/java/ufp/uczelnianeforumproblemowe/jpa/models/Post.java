@@ -3,6 +3,7 @@ package ufp.uczelnianeforumproblemowe.jpa.models;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -20,6 +21,13 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "temat_id")
     private Temat temat;
+
+//    @OneToMany(mappedBy = "post")
+//    List<Plik> pliki;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "plik_id", referencedColumnName = "id")
+    private Plik plik;
 
     public Post(){
         this.dataUtworzenia = Date.valueOf(LocalDate.now());
@@ -69,4 +77,20 @@ public class Post {
     public void setTemat(Temat temat) {
         this.temat = temat;
     }
+
+    public Plik getPlik() {
+        return plik;
+    }
+
+    public void setPlik(Plik plik) {
+        this.plik = plik;
+    }
+
+    //    public List<Plik> getPliki() {
+//        return pliki;
+//    }
+//
+//    public void setPliki(List<Plik> pliki) {
+//        this.pliki = pliki;
+//    }
 }

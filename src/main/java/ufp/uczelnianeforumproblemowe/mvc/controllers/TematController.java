@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufp.uczelnianeforumproblemowe.jpa.models.*;
+import ufp.uczelnianeforumproblemowe.logic.plikService.PlikService;
 import ufp.uczelnianeforumproblemowe.logic.postService.PostService;
 import ufp.uczelnianeforumproblemowe.logic.tematService.TematService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
 import ufp.uczelnianeforumproblemowe.logic.watekService.WatekService;
+import ufp.uczelnianeforumproblemowe.mvc.modelViews.PostView;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.TematView;
-import ufp.uczelnianeforumproblemowe.mvc.modelViews.WatekView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,32 +30,43 @@ public class TematController {
     private final PostService postService;
     private final UzytkownikService uzytkownikService;
     private final WatekService watekService;
+    private final PlikService plikService;
 
     public TematController(@Autowired TematService tematService,
                            @Autowired PostService postService,
                            @Autowired UzytkownikService uzytkownikService,
-                           @Autowired WatekService watekService) {
+                           @Autowired WatekService watekService,
+                           @Autowired PlikService plikService) {
         this.tematService = tematService;
         this.postService = postService;
         this.uzytkownikService = uzytkownikService;
         this.watekService = watekService;
+        this.plikService = plikService;
     }
 
     @GetMapping("/temat/{id}")
     public String ZwrocTemat(@PathVariable("id") long id, Model model){
+        // Do pokazywania odpowiednich elementów na końcie admina i moderatora
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String rola = auth.getAuthorities().toString();
         model.addAttribute("rola", rola);
 
+        // Do pokazania info na temat uzytkownika
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
-        uzytkownik.setBierzacyWydzial(uzytkownik.getWydzial().getNazwa());
         model.addAttribute("uzytkownik", uzytkownik);
-
-        List<Temat> tematLista = tematService.pobierzWszystkieTematyNaPodstawieWatku(id);
-        model.addAttribute("tematLista", tematLista);
 
         List<Post> postLista = postService.pobierzWszystkiePostyNaPodstawieTematu(id);
         model.addAttribute("postLista", postLista);
+
+        // Temat potrzebny do pokazania w jakim jestesmy temacie
+        Temat biezacyTemat = tematService.znajdzTematPoId(id);
+        model.addAttribute("biezacyTemat", biezacyTemat);
+
+        PostView postView = new PostView();
+        model.addAttribute("postView", postView);
+
+        List<Plik> pliki = plikService.sciagnijPlikiUzytkownika(uzytkownik.getId());
+        model.addAttribute("pliki", pliki);
 
         return "Temat";
     }

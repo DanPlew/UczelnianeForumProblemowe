@@ -31,4 +31,9 @@ public class WydzialService implements WydzialServiceInterface{
     public List<Wydzial> pobierzWszystkieWydzialy() {
         return wydzialRepository.findAll();
     }
+
+    @Override
+    public Wydzial pobierzWydzialNaPodstawieId(long id){
+        return wydzialRepository.findById(id).orElse(null);
+    }
 }

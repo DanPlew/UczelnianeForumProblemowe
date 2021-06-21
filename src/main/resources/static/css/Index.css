@@ -26,6 +26,9 @@ body{
 }
 
 @media (max-width: 576px) {
+    body{
+        font-size: 12px;
+    }
     .widocznoscDuza{
         display: none;
     }

@@ -2,6 +2,7 @@ package ufp.uczelnianeforumproblemowe.logic.tematService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.TematRepository;
 
@@ -34,5 +35,10 @@ public class TematService implements TematServiceInterface{
     @Override
     public Temat znajdzTematPoId(long id) {
         return tematRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Integer pobierzWszystkieTematyWedlugWydzialu(WydzialEnum wydzialEnum) {
+        return tematRepository.pobierzWszystkieTematyWedlugWydzialu(wydzialEnum);
     }
 }

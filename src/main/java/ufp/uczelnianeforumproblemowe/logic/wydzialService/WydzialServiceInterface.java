@@ -9,4 +9,5 @@ public interface WydzialServiceInterface {
     Wydzial znajdzWydzialNaPodstawieNazwy(WydzialEnum nazwaWydzialu);
     void zapiszWydzial(Wydzial wydzial);
     List<Wydzial> pobierzWszystkieWydzialy();
+    Wydzial pobierzWydzialNaPodstawieId(long id);
 }

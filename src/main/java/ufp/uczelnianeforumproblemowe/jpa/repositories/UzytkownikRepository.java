@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 
 @Repository
@@ -14,8 +15,6 @@ public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     Uzytkownik findByEmailPrywatny(String emailPrywatny);
     Uzytkownik findByImie(String imie);
 
-    @Transactional
-    @Modifying
-    @Query("update Uzytkownik user set user.aktywnoscKonta = true where user.login = ?1")
-    void aktywowanieKonta(String login);
+    @Query(value = "select count(uzytkownik.login) from Uzytkownik uzytkownik inner join Wydzial wydzial on wydzial.id = uzytkownik.wydzial.id where wydzial.nazwa = ?1")
+    Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 }

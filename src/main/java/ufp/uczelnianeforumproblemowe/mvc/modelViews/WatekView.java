@@ -12,13 +12,10 @@ public class WatekView implements Serializable {
 
     private long idRodzica;
 
+    private String nazwaRodzica;
+
     public WatekView(){}
 
-    public WatekView(long id, String nazwa, int idRodzica) {
-        this.id = id;
-        this.nazwa = nazwa;
-        this.idRodzica = idRodzica;
-    }
 
     public long getId() {
         return id;
@@ -42,5 +39,13 @@ public class WatekView implements Serializable {
 
     public void setIdRodzica(long idRodzica) {
         this.idRodzica = idRodzica;
+    }
+
+    public String getNazwaRodzica() {
+        return nazwaRodzica;
+    }
+
+    public void setNazwaRodzica(String nazwaRodzica) {
+        this.nazwaRodzica = nazwaRodzica;
     }
 }

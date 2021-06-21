@@ -1,6 +1,5 @@
 package ufp.uczelnianeforumproblemowe.jpa.models;
 
-import ufp.uczelnianeforumproblemowe.mvc.modelViews.WatekView;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -8,6 +7,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@NamedStoredProcedureQueries(
+        @NamedStoredProcedureQuery(name = "procedura", procedureName = "PobierzWszystkiePodwatkiDanegoWatku",
+                parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "idNadwatku", type = Long.class),
+                @StoredProcedureParameter(mode = ParameterMode.OUT, name = "suma", type = Integer.class)})
+)
 public class Watek {
 
     @Id
@@ -25,7 +30,7 @@ public class Watek {
     private Wydzial wydzial;
 
     @ManyToOne
-    @JoinColumn(name = "parentWantek_id")
+    @JoinColumn(name = "parentWatek_id")
     private Watek parentWatek;
 
     @OneToMany(mappedBy="parentWatek", cascade = CascadeType.REMOVE)

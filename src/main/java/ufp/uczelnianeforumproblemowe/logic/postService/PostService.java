@@ -21,4 +21,19 @@ public class PostService implements PostServiceInterface{
     public List<Post> pobierzWszystkiePostyNaPodstawieTematu(long idTematu) {
         return postRepository.pobierzWszystkiePostyNaPodstawieTematu(idTematu);
     }
+
+    @Override
+    public Post pobierzPostWedlugId(long id){
+        return postRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void zapiszPost(Post post){
+        postRepository.save(post);
+    }
+
+    @Override
+    public void usunPost(Post post){
+        postRepository.delete(post);
+    }
 }

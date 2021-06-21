@@ -7,13 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.models.Wydzial;
+import ufp.uczelnianeforumproblemowe.jpa.repositories.WatekRepository;
+import ufp.uczelnianeforumproblemowe.logic.tematService.TematService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
+import ufp.uczelnianeforumproblemowe.logic.watekService.WatekService;
 import ufp.uczelnianeforumproblemowe.logic.wydzialService.WydzialService;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.WydzialView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,11 +26,17 @@ public class ForumController {
 
     private final UzytkownikService uzytkownikService;
     private final WydzialService wydzialService;
+    private final WatekService watekService;
+    private final TematService tematService;
 
     public ForumController(@Autowired UzytkownikService uzytkownikService,
-                           @Autowired WydzialService wydzialService) {
+                           @Autowired WydzialService wydzialService,
+                           @Autowired WatekService watekService,
+                           @Autowired TematService tematService) {
         this.uzytkownikService = uzytkownikService;
         this.wydzialService = wydzialService;
+        this.watekService = watekService;
+        this.tematService = tematService;
     }
 
     @GetMapping("/zmianaForum")
@@ -39,17 +50,38 @@ public class ForumController {
         wydzialLista.removeIf(wydzial -> wydzial.getNazwa() == uzytkownik.getBierzacyWydzial());
         model.addAttribute("wydzialy", wydzialLista);
 
-        WydzialView wydzialView = new WydzialView();
-        model.addAttribute("wydzialView", wydzialView);
+        List<Integer> watkiWwydziale = new ArrayList<>();
+        wydzialLista.forEach(wydzial -> watkiWwydziale.add(watekService.pobierzWszystkieWatkiNaPodstawieWydzialu(wydzial.getNazwa())));
+        model.addAttribute("liczbaWatkowWWydziale", watkiWwydziale);
+
+        List<Integer> uzytkownicyWWydziale = new ArrayList<>();
+        wydzialLista.forEach(wydzial -> uzytkownicyWWydziale.add(uzytkownikService.pobierzWszystkichUzytkownikowNaPodstawieWydzialu(wydzial.getNazwa())));
+        model.addAttribute("iloscUczniowWWydziale", uzytkownicyWWydziale);
+
+        List<Integer> tematyWWydziale = new ArrayList<>();
+        wydzialLista.forEach(wydzial -> tematyWWydziale.add(tematService.pobierzWszystkieTematyWedlugWydzialu(wydzial.getNazwa())));
+        model.addAttribute("iloscTematowWWydziale", tematyWWydziale);
+//        WydzialView wydzialView = new WydzialView();
+//        model.addAttribute("wydzialView", wydzialView);
 
         return "ForumChanger";
     }
 
-    @PostMapping("/zmianaForum")
-    public String zmienForum(@ModelAttribute("wydzialView") WydzialView wydzialView){
+//    @PostMapping("/zmianaForum")
+//    public String zmienForum(@ModelAttribute("wydzialView") WydzialView wydzialView){
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
+//        uzytkownik.setBierzacyWydzial(wydzialView.getWydzialEnum());
+//        uzytkownikService.zapiszUzytkownika(uzytkownik);
+//        return "redirect:/";
+//    }
+
+    @GetMapping("/zmianaForum/{id}")
+    public String zmienForum(@PathVariable(name = "id") long id){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
-        uzytkownik.setBierzacyWydzial(wydzialView.getWydzialEnum());
+        Wydzial wydzial = wydzialService.pobierzWydzialNaPodstawieId(id);
+        uzytkownik.setBierzacyWydzial(wydzial.getNazwa());
         uzytkownikService.zapiszUzytkownika(uzytkownik);
         return "redirect:/";
     }

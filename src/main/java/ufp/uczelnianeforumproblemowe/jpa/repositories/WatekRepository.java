@@ -17,4 +17,7 @@ public interface WatekRepository extends JpaRepository<Watek, Long> {
 
     @Query(value = "select watek from Watek watek inner join Wydzial wydzial on wydzial.id = watek.wydzial.id where wydzial.nazwa = ?1 and watek.parentWatek.id = ?2")
     List<Watek> pobierzWszystkiePodWatkiNaPodstawieRodzica(WydzialEnum wydzialEnum, long idRodzica);
+
+    @Query(value = "select count(watek.nazwa) from Watek watek inner join Wydzial wydzial on wydzial.id = watek.wydzial.id where wydzial.nazwa = ?1")
+    Integer pobierzWszystkieWatkiNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 }

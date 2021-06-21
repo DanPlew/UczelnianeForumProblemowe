@@ -13,4 +13,5 @@ public interface WatekServiceInterface {
     List<Watek> pobierzWszystkieWatkiGlowneNaPodstawieWydzialu(WydzialEnum wydzialEnum);
     List<Watek> pobierzWszystkiePodWatkiNaPodstawieRodzica(WydzialEnum wydzialEnum, long idRodzica);
     void usunWatek(long id);
+    Integer pobierzWszystkieWatkiNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 }

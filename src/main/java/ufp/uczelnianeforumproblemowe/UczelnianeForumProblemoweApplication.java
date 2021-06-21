@@ -29,12 +29,20 @@ public class UczelnianeForumProblemoweApplication {
 
             Uzytkownik uzytkownik1 = new Uzytkownik("Daniel", passwordEncoder.encode("qwerty"), "Danielson", RangaEnum.ADMINISTRATOR, "s17198@pjwstk.edu.pl", "dpplewinski@gmail.com");
             Uzytkownik uzytkownik2 = new Uzytkownik("Hubert", passwordEncoder.encode("qwerty"), "Hubert", RangaEnum.MODERATOR, "s16607@pjwstk.edu.pl", "hubster@gmail.com");
+            Uzytkownik uzytkownik3 = new Uzytkownik("Stusia", passwordEncoder.encode("qwerty"), "Konstancja", RangaEnum.UZYTKOWNIK, "s171982@pjwstk.edu.pl", "dppl2ewinski@gmail.com");
+
+            uzytkownik1.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
+            uzytkownik2.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
+            uzytkownik3.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
+
 
             uzytkownik1.setWydzial(wydzial1);
             uzytkownik2.setWydzial(wydzial2);
+            uzytkownik3.setWydzial(wydzial3);
 
             uzytkownikRepository.save(uzytkownik1);
             uzytkownikRepository.save(uzytkownik2);
+            uzytkownikRepository.save(uzytkownik3);
 
             Watek watek1 = new Watek("Projekty");
             Watek watek2 = new Watek("Podprojekty");
@@ -83,10 +91,6 @@ public class UczelnianeForumProblemoweApplication {
     }
 }
 
-// TODO 1: Możliwość przejścia z forum jednego na drugie.
-// TODO 2: Dorobić posty i możliwość wgrania pliku.
-// TODO 3: Zrobić edycje poszczególnych encji w html ze względu na role.
-// TODO 4: Zrobić możliwość zmiany hasła.
-// TODO 5: Zrobić profil użytkownika wraz z jego dodanymi plikami?
-// TODO 6: Dorobić podstrone z obserwowanymi przez nas osobami byśmy mogli wejść na ich profil.
-// TODO 7: Zrobić możliwość zamykania tematów, by nie móc już tam postować.
+// TODO 3: Dorobić podstrone z obserwowanymi przez nas osobami byśmy mogli wejść na ich profil.
+// TODO 4: Zrobić możliwość zamykania tematów, by nie móc już tam postować.
+// TODO 5: Banowanie kogoś
