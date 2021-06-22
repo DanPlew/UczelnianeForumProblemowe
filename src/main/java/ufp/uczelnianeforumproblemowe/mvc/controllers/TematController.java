@@ -81,12 +81,17 @@ public class TematController {
     public String dodajNowyTemat(@ModelAttribute @Valid TematView tematView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się od 3 do 20 znakow a opis do 100 znakow!");
+            redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się od 5 do 50 znakow a opis do 200 znakow!");
             return "redirect:/watek/" + tematView.getIdRodzica();
         }
 
         if(tematView.getOpis().equals("")){
-            redirectAttributes.addFlashAttribute("wrongNameForTemat","Opis nie może być pusty");
+            redirectAttributes.addFlashAttribute("wrongNameForTemat","Opis nie może być pusty!");
+            return "redirect:/watek/" + tematView.getIdRodzica();
+        }
+
+        if(tematView.getNazwa().equals("")){
+            redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa nie może być pusta!");
             return "redirect:/watek/" + tematView.getIdRodzica();
         }
 
@@ -159,9 +164,9 @@ public class TematController {
             temat.setOpis(tematView.getOpis());
         }
 
-        // Jeśli ktoś wpisał 0 to nic
-        // Jeśli ktoś wpisał wartość to ma nam zmienic rodzica
-        // Jeśli ktoś wpisał -1 to ma nam zmienic watek na glowny
+        // 0 to nic
+        // wartość to ma nam zmienic rodzica
+        // -1 to ma nam zmienic watek na glowny
 
         switch((int)tematView.getIdRodzica()){
             case 0:

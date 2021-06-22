@@ -14,8 +14,6 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class EmailService implements WysylanieEmailInterface{
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
-
     private final JavaMailSender mailSender;
 
     public EmailService(@Autowired JavaMailSender javaMailSender){

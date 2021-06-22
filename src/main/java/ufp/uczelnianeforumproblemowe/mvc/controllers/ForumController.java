@@ -41,8 +41,13 @@ public class ForumController {
 
     @GetMapping("/zmianaForum")
     public String zmienForumHtml(Model model){
-        // Do pokazania info na temat uzytkownika
+
+        // Do pokazywania odpowiednich elementów na końcie admina i moderatora
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String rola = auth.getAuthorities().toString();
+        model.addAttribute("rola", rola);
+
+        // Do pokazania info na temat uzytkownika
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
         model.addAttribute("uzytkownik", uzytkownik);
 

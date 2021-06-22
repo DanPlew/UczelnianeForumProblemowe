@@ -10,11 +10,10 @@ public class TematView implements Serializable {
 
     private long idRodzica;
 
-    @NotBlank(message = "Pole jest wymagane!")
-    @Size(min = 3, max = 20, message ="Nazwa musi zawierac od 3 do 20 znaków!")
+    @Size(min = 5, max = 50, message ="Nazwa musi zawierac od 5 do 50 znaków!")
     private String nazwa;
 
-    @Size(max = 100, message ="Opis musi zawierac do 100 znaków!")
+    @Size(max = 200, message ="Opis musi zawierac do 200 znaków!")
     private String opis;
 
     public TematView() {}

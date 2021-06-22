@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufp.uczelnianeforumproblemowe.jpa.models.Plik;
 import ufp.uczelnianeforumproblemowe.logic.plikService.PlikService;
 
@@ -27,11 +28,13 @@ public class PlikController {
 
     @PostMapping("/plik/add/{id}")
     public String zapiszPlik(@RequestParam("pliki") MultipartFile[] pliki,
-                             @PathVariable("id") long id){
+                             @PathVariable("id") long id,
+                             RedirectAttributes redirectAttributes){
         try {
             plikService.zapiszPlik(pliki, id);
-        }catch (IOException e){
-
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("fileException","Nie udało się wgrać pliku..");
+            return "redirect:/profil/" + id;
         }
         return "redirect:/profil/" + id;
     }

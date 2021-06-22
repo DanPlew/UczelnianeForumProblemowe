@@ -27,14 +27,9 @@ public class UczelnianeForumProblemoweApplication {
             wydzialRepository.save(wydzial2);
             wydzialRepository.save(wydzial3);
 
-            Uzytkownik uzytkownik1 = new Uzytkownik("Daniel", passwordEncoder.encode("qwerty"), "Danielson", RangaEnum.ADMINISTRATOR, "s17198@pjwstk.edu.pl", "dpplewinski@gmail.com");
-            Uzytkownik uzytkownik2 = new Uzytkownik("Hubert", passwordEncoder.encode("qwerty"), "Hubert", RangaEnum.MODERATOR, "s16607@pjwstk.edu.pl", "hubster@gmail.com");
-            Uzytkownik uzytkownik3 = new Uzytkownik("Stusia", passwordEncoder.encode("qwerty"), "Konstancja", RangaEnum.UZYTKOWNIK, "s171982@pjwstk.edu.pl", "dppl2ewinski@gmail.com");
-
-            uzytkownik1.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
-            uzytkownik2.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
-            uzytkownik3.setOpis("Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis aliquid, reiciendis facilis rerum accusantium aut libero magni animi laboriosam qui sed aperiam explicabo voluptates, cum adipisci nostrum enim recusandae inventore!");
-
+            Uzytkownik uzytkownik1 = new Uzytkownik("Admin", passwordEncoder.encode("qwerty"), "Daniel", RangaEnum.ADMINISTRATOR, "s17198@pjwstk.edu.pl", "daniel@gmail.com");
+            Uzytkownik uzytkownik2 = new Uzytkownik("Moderator", passwordEncoder.encode("qwerty"), "Hubert", RangaEnum.MODERATOR, "s16607@pjwstk.edu.pl", "hubert@gmail.com");
+            Uzytkownik uzytkownik3 = new Uzytkownik("Uzytkownik", passwordEncoder.encode("qwerty"), "Konstancja", RangaEnum.UZYTKOWNIK, "s171982@pjwstk.edu.pl", "konstancja@gmail.com");
 
             uzytkownik1.setWydzial(wydzial1);
             uzytkownik2.setWydzial(wydzial2);
@@ -71,14 +66,14 @@ public class UczelnianeForumProblemoweApplication {
             temat1.setUzytkownik(uzytkownik1);
             tematRepository.save(temat1);
 
-            Temat temat2 = new Temat("Eklips", "Nienawidze tego :(");
+            Temat temat2 = new Temat("C++", "Bardzo fajny poradnik dotyczacy C++ :)");
             temat2.setWatek(watek2);
             temat2.setUzytkownik(uzytkownik1);
             tematRepository.save(temat2);
 
-            Post post1 = new Post("NIE WIEM NIE ZNAM SIE");
-            Post post2 = new Post("Test test test");
-            Post post3 = new Post("xd?");
+            Post post1 = new Post("    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur ratione totam voluptas accusamus laboriosam maxime deserunt repudiandae saepe veniam officia earum dicta sapiente, ea molestias id ullam atque blanditiis?");
+            Post post2 = new Post("    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur ratione totam voluptas accusamus laboriosam maxime deserunt repudiandae saepe veniam officia earum dicta sapiente, ea molestias id ullam atque blanditiis?");
+            Post post3 = new Post("    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur ratione totam voluptas accusamus laboriosam maxime deserunt repudiandae saepe veniam officia earum dicta sapiente, ea molestias id ullam atque blanditiis?");
 
             post1.setTemat(temat1);
             post1.setUzytkownik(uzytkownik1);
@@ -93,7 +88,3 @@ public class UczelnianeForumProblemoweApplication {
         };
     }
 }
-
-// TODO 3: Dorobić podstrone z obserwowanymi przez nas osobami byśmy mogli wejść na ich profil.
-// TODO 4: Zrobić możliwość zamykania tematów, by nie móc już tam postować.
-// TODO 5: Banowanie kogoś

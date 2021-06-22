@@ -7,7 +7,7 @@ public class WatekView implements Serializable {
 
     private long id;
 
-    @Size(max = 30, message ="Nazwa musi zawierac do 30 znaków!")
+    @Size(max = 50, message ="Nazwa musi zawierac do 50 znaków!")
     private String nazwa;
 
     private long idRodzica;

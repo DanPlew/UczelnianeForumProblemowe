@@ -11,10 +11,6 @@ public class Plik {
     private String nazwa;
     private String rozszerzenie;
 
-//    @ManyToOne
-//    @JoinColumn(name = "post_id")
-//    private Post post;
-
     @ManyToOne
     @JoinColumn(name = "uzytkownik_id")
     private Uzytkownik uzytkownik;

@@ -118,7 +118,7 @@ public class ProfilController {
     @PostMapping("/zgloszenie/add")
     public String zglosUzytkownika(@ModelAttribute("zgloszenieView") ZgloszenieView zgloszenieView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("wrongZgloszenie","Zgloszenie nie  moze być dłuższe niż 1000 znaków!");
+            redirectAttributes.addFlashAttribute("wrongZgloszenie","Zgloszenie nie  moze być dłuższe niż 2000 znaków!");
             return "redirect:/profil/" + zgloszenieView.getIdOskarzony();
         }
 

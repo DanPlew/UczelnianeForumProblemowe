@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 public class ZgloszenieView {
 
-    @Size(max = 1000, message = "Zgłoszenie max 1000 znaków!")
+    @Size(max = 2000, message = "Zgłoszenie max 2000 znaków!")
     private String wiadomoscZgloszenia;
     private long idUzytkownik;
     private long idOskarzony;

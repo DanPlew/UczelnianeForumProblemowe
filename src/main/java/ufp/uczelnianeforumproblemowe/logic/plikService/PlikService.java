@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class PlikService {
+public class PlikService implements PlikServiceInterface {
 
     private final PlikRepository plikRepository;
     private final UzytkownikService uzytkownikService;
@@ -24,6 +24,7 @@ public class PlikService {
         this.uzytkownikService = uzytkownikService;
     }
 
+    @Override
     public void zapiszPlik(MultipartFile[] multipartFile, long id)throws IOException{
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieId(id);
         for (MultipartFile file : multipartFile){
@@ -37,14 +38,17 @@ public class PlikService {
         }
     }
 
+    @Override
     public Plik sciagnijPlik(long id){
         return plikRepository.findById(id).orElse(null);
     }
 
+    @Override
     public List<Plik> sciagnijPlikiUzytkownika(long id){
         return plikRepository.getAllByUzytkownikId(id);
     }
 
+    @Override
     public void usunPlik(Plik plik){
         System.out.println(plik.getNazwa());
         plikRepository.delete(plik);

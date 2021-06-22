@@ -42,7 +42,7 @@ public class PostController {
     public String dodajPost(@ModelAttribute("postView")PostView postView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("wrongPost","Wiadomość jest za długa.. Max 1000 znaków.");
+            redirectAttributes.addFlashAttribute("wrongPost","Wiadomość jest za długa.. Max 2000 znaków.");
             return "redirect:/temat/" + postView.getIdTematu();
         }
 

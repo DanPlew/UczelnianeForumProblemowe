@@ -23,8 +23,6 @@ public class Uzytkownik {
 
     private String imie;
 
-    private String opis;
-
     @Enumerated(EnumType.ORDINAL)
     private RangaEnum ranga;
 
@@ -239,14 +237,6 @@ public class Uzytkownik {
 
     public void setPosty(List<Post> posty) {
         this.posty = posty;
-    }
-
-    public String getOpis() {
-        return opis;
-    }
-
-    public void setOpis(String opis) {
-        this.opis = opis;
     }
 
     public List<Plik> getPliki() {

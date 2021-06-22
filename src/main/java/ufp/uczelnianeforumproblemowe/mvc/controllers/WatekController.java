@@ -164,23 +164,22 @@ public class WatekController {
     public String zaktualizujWatek(@ModelAttribute("watekView")@Valid WatekView watekView, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("wrongNameForWatek","Nazwa musi zawierać się do 30 znakow.");
+            redirectAttributes.addFlashAttribute("wrongNameForWatek","Nazwa musi zawierać się do 50 znakow.");
             return "redirect:/watek/update/" + watekView.getId();
         }
 
         Watek watek = watekService.znajdzWatekNaPodstawieId(watekView.getId());
         if(watek == null){
-//            redirectAttributes.addFlashAttribute("wrongIdWatek","Nie ma takiego watku..");
-//            return "redirect:/watek/" + watekView.getIdRodzica();
+            redirectAttributes.addFlashAttribute("watekNotFound","Nie ma takiego watku..");
             return "redirect:/";
         }
 
         // Jeśli nazwa jest pusta to mamy nie zmieniać nazwy
         if(!watekView.getNazwa().equals("")) watek.setNazwa(watekView.getNazwa());
 
-        // Jeśli ktoś wpisał 0 to nic
-        // Jeśli ktoś wpisał wartość to ma nam zmienic rodzica
-        // Jeśli ktoś wpisał -1 to ma nam zmienic watek na glowny
+        // 0 to nic
+        // wartość to ma nam zmienic rodzica
+        // -1 to ma nam zmienic watek na glowny
 
         switch((int)watekView.getIdRodzica()){
             case -1:

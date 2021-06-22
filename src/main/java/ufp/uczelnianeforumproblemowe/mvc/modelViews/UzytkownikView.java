@@ -10,19 +10,19 @@ import java.io.Serializable;
 public class UzytkownikView implements Serializable {
 
     @NotBlank(message = "Pole jest wymagane!")
-    @Size(min = 5, max = 20, message ="Login musi zawierac od 5 do 20 znaków!")
+    @Size(min = 5, max = 50, message ="Login musi zawierac od 5 do 50 znaków!")
     private String login;
 
     @NotBlank(message = "Pole jest wymagane!")
-    @Size(min = 5, max = 20, message ="Haslo musi zawierac od 5 do 20 znaków!")
+    @Size(min = 5, max = 50, message ="Haslo musi zawierac od 5 do 50 znaków!")
     private String haslo;
 
     @NotBlank(message = "Pole jest wymagane!")
-    @Size(min = 3, max = 20, message ="Imie musi zawierac od 5 do 20 znaków!")
+    @Size(min = 3, max = 50, message ="Imie musi zawierac od 3 do 50 znaków!")
     private String imie;
 
     @NotBlank(message = "Pole jest wymagane!")
-    @Size(min = 5, max = 40, message ="Email uczelniany musi zawierac od 5 do 40 znaków!")
+    @Size(min = 16, max = 50, message ="Email uczelniany musi zawierac od 16 do 50 znaków!")
     @Pattern(regexp = "s\\d+@pjwstk.edu.pl", message = "Email musi zaczynac sie na s i konczyc na @pjwstk.edu.pl")
     private String emailUczelniany;
 
