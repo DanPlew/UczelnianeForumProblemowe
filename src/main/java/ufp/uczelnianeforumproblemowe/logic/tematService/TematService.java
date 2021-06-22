@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
+import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.TematRepository;
 
 import java.util.List;
@@ -40,5 +41,15 @@ public class TematService implements TematServiceInterface{
     @Override
     public Integer pobierzWszystkieTematyWedlugWydzialu(WydzialEnum wydzialEnum) {
         return tematRepository.pobierzWszystkieTematyWedlugWydzialu(wydzialEnum);
+    }
+
+    @Override
+    public List<Temat> getTematByUzytkownik(Uzytkownik uzytkownik) {
+        return tematRepository.getTematByUzytkownik(uzytkownik);
+    }
+
+    @Override
+    public List<Temat> pobierzTematyGdzieWstawionoPost(long id) {
+        return tematRepository.pobierzTematyGdzieWstawionoPost(id);
     }
 }

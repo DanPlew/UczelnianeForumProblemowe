@@ -21,6 +21,7 @@ import ufp.uczelnianeforumproblemowe.mvc.modelViews.PostView;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.TematView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -68,6 +69,11 @@ public class TematController {
         List<Plik> pliki = plikService.sciagnijPlikiUzytkownika(uzytkownik.getId());
         model.addAttribute("pliki", pliki);
 
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        obserwowani.forEach(uzytkownik1 -> System.out.println(uzytkownik1.getImie()));
+        model.addAttribute("obserwowaniLista", obserwowani);
+
         return "Temat";
     }
 
@@ -76,6 +82,11 @@ public class TematController {
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się od 3 do 20 znakow a opis do 100 znakow!");
+            return "redirect:/watek/" + tematView.getIdRodzica();
+        }
+
+        if(tematView.getOpis().equals("")){
+            redirectAttributes.addFlashAttribute("wrongNameForTemat","Opis nie może być pusty");
             return "redirect:/watek/" + tematView.getIdRodzica();
         }
 
@@ -117,29 +128,33 @@ public class TematController {
         TematView tematView = new TematView();
         model.addAttribute("tematView", tematView);
 
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        obserwowani.forEach(uzytkownik1 -> System.out.println(uzytkownik1.getImie()));
+        model.addAttribute("obserwowaniLista", obserwowani);
+
         return "TematEdycja";
     }
 
     @PostMapping("/temat/update")
     public String zaktualizujTemat(@ModelAttribute("tematView")@Valid TematView tematView, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes){
 
-//        if(bindingResult.hasErrors()){
-//            redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się do 30 znakow.");
-//            return "redirect:/temat/update/" + tematView.getIdRodzica();
-//        }
-
         Temat temat = tematService.znajdzTematPoId(tematView.getId());
-//        if(temat == null){
-//            model.addAttribute("tematView", tematView);
-//            redirectAttributes.addFlashAttribute("wrongIdTemat","Nie ma takiego tematu..");
-//            return "redirect:/watek/update/" + watekView.getId();
-//            return "redirect:/";
-//        }
+
+        if(temat == null){
+            model.addAttribute("tematView", tematView);
+            redirectAttributes.addFlashAttribute("tematNotFound","Nie ma takiego tematu..");
+            return "redirect:/";
+        }
 
 
         // Jeśli nazwa jest pusta to mamy nie zmieniać nazwy
-        if(!tematView.getNazwa().equals("")) temat.setNazwa(tematView.getNazwa());
-        if(!tematView.getOpis().equals("")) temat.setOpis(tematView.getOpis());
+        if(!tematView.getNazwa().equals("")) {
+            temat.setNazwa(tematView.getNazwa());
+        }
+        if(!tematView.getOpis().equals("")) {
+            temat.setOpis(tematView.getOpis());
+        }
 
         // Jeśli ktoś wpisał 0 to nic
         // Jeśli ktoś wpisał wartość to ma nam zmienic rodzica
@@ -153,7 +168,7 @@ public class TematController {
                 Watek rodzic = watekService.znajdzWatekNaPodstawieId(tematView.getIdRodzica());
                 if (rodzic == null) {
                     model.addAttribute("tematView", tematView);
-                    redirectAttributes.addFlashAttribute("wrongIdRodzicaTemat", "Nie ma takiego id rodzica..");
+                    redirectAttributes.addFlashAttribute("wrongIdRodzicaTemat", "Nie ma takiego watku..");
                 }
                 else {
                     temat.setWatek(rodzic);
@@ -162,4 +177,30 @@ public class TematController {
                 return "redirect:/temat/update/" + tematView.getId();
         }
     }
+
+    @GetMapping("/aktywnosc")
+    public String pobierzAktywnoscHtml(Model model){
+        // Do pokazywania odpowiednich elementów na końcie admina i moderatora
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String rola = auth.getAuthorities().toString();
+        model.addAttribute("rola", rola);
+
+        // Do pokazania info na temat uzytkownika
+        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
+        model.addAttribute("uzytkownik", uzytkownik);
+
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        model.addAttribute("obserwowaniLista", obserwowani);
+
+        List<Temat> listaTematow = tematService.getTematByUzytkownik(uzytkownik);
+        List<Temat> listaTematowPost = tematService.pobierzTematyGdzieWstawionoPost(uzytkownik.getId());
+        List<Temat> listaAktywnosci = new ArrayList<>(listaTematowPost);
+        listaAktywnosci.removeAll(listaTematow);
+        listaTematow.addAll(listaAktywnosci);
+        model.addAttribute("listaTematow", listaTematow);
+
+        return "Aktywnosc";
+    }
+
 }

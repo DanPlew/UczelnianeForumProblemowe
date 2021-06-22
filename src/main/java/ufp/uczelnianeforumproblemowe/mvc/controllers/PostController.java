@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufp.uczelnianeforumproblemowe.jpa.models.Plik;
 import ufp.uczelnianeforumproblemowe.jpa.models.Post;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
@@ -37,7 +39,18 @@ public class PostController {
     }
 
     @PostMapping("/post/add")
-    public String dodajPost(@ModelAttribute("postView")PostView postView){
+    public String dodajPost(@ModelAttribute("postView")PostView postView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("wrongPost","Wiadomość jest za długa.. Max 1000 znaków.");
+            return "redirect:/temat/" + postView.getIdTematu();
+        }
+
+        if(postView.getWiadomosc().equals("")){
+            redirectAttributes.addFlashAttribute("wrongPost","Wiadomość nie może być pusta!");
+            return "redirect:/temat/" + postView.getIdTematu();
+        }
+
         Post post = new Post();
         post.setWiadomosc(postView.getWiadomosc());
         Plik plik = plikService.sciagnijPlik(postView.getIdPliku());

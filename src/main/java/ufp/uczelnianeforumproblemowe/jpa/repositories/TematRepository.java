@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
+import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 
 import java.util.List;
 
@@ -19,4 +20,12 @@ public interface TematRepository extends JpaRepository<Temat, Long> {
             "inner join Wydzial wydzial on wydzial.id = watek.wydzial.id " +
             "where wydzial.nazwa = ?1")
     Integer pobierzWszystkieTematyWedlugWydzialu(WydzialEnum wydzialEnum);
+
+    List<Temat> getTematByUzytkownik(Uzytkownik uzytkownik);
+
+    @Query(value = "select temat from Temat temat " +
+            "inner join Post post on temat.id = post.temat.id " +
+            "inner join Uzytkownik  uzytkownik on post.uzytkownik.id = uzytkownik.id " +
+            "where uzytkownik.id = ?1")
+    List<Temat> pobierzTematyGdzieWstawionoPost(long id);
 }

@@ -6,6 +6,8 @@ import ufp.uczelnianeforumproblemowe.jpa.enums.WydzialEnum;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.UzytkownikRepository;
 
+import java.util.List;
+
 @Service
 public class UzytkownikService implements UzytkownikServiceInterface ,SprawdzenieUzytkownikServiceInterface{
 
@@ -46,6 +48,10 @@ public class UzytkownikService implements UzytkownikServiceInterface ,Sprawdzeni
     @Override
     public Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum) {
         return uzytkownikRepository.pobierzWszystkichUzytkownikowNaPodstawieWydzialu(wydzialEnum);
+    }
+
+    public List<Uzytkownik> pobierzObserwujacych(long id){
+        return uzytkownikRepository.pobierzObserwujacych(id);
     }
 
     @Override

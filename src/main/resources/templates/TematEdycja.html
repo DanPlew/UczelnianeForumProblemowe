@@ -30,9 +30,9 @@
     <!-- OPCJE FORUM -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="#">Profil </a>
-        <a class="nav-link" href="#">Forum</a>
-        <a class="nav-link" href="#">Moje posty</a>
+        <a class="nav-link" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil </a>
+        <a class="nav-link" href="/zmianaForum">Forum</a>
+        <a class="nav-link" href="/aktywnosc">Aktywnosc</a>
         <a class="nav-link" href="/logout">Wyloguj</a>
       </div>
     </div>
@@ -44,12 +44,25 @@
 
   <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
   <!-- UZYTKOWNIK -->
-  <div class="row justify-content-sm-start justify-content-md-end">
-    <div class="col-sm col-md-3">
+  <div class="row justify-content-end">
+    <div class="dropdown">
+      <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Obserwowani
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <table>
+          <tr th:each="obserwowany,i : ${obserwowaniLista}">
+            <th><a class="dropdown-item" th:href="@{/profil/{id}(id = ${obserwowany.getId()})}" th:text="${obserwowany.getImie()}"></a></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getLogin()}"></span>
     </div>
-    <div class="col-sm col-md-3">
+    <div class="col-auto ml-1">
       <i class="fas fa-user-tag"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getRanga()}"></span>
     </div>
@@ -66,7 +79,6 @@
 
       <!-- ALERT DOTYCZĄCY BŁĘDÓW PODCZAS WPROWADZANIA DANYCH -->
       <!-- ALERTY -->
-      <div th:if="${wrongIdTemat}" th:text="${wrongIdTemat}" class="alert alert-danger"></div>
       <div th:if="${wrongIdRodzicaTemat}" th:text="${wrongIdRodzicaTemat}" class="alert alert-danger"></div>
 
       <!-- WYŚWIETLENIE DANYCH EDYTOWANEGO TEMATU -->
@@ -86,7 +98,6 @@
         <div class="form-group">
           <input type="number" th:name="id" th:value="${temat.getId()}" class="d-none" id="id">
           <label>Nowa nazwa:</label>
-<!--          <div th:if="${wrongNameForTemat}" th:text="${wrongNameForTemat}" class="alert alert-danger"></div>-->
           <input type="text" th:field="*{nazwa}" class="form-control" id="nazwa" placeholder="Nowa nazwa Tematu">
           <br>
 
@@ -100,6 +111,8 @@
             <option th:each="watekk : ${wszystkieWatki}" th:value="${watekk.getId()}" th:text="${watekk.getNazwa()}"></option>
           </select>
         </div>
+
+        <div th:if="${wrongNameForTemat}" th:text="${wrongNameForTemat}" class="alert alert-danger"></div>
 
         <div class="row">
           <div class="col-6">

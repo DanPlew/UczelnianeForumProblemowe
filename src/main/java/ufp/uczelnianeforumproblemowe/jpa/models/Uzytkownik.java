@@ -61,6 +61,18 @@ public class Uzytkownik {
     @OneToMany(mappedBy = "uzytkownik")
     private List<Plik> pliki;
 
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Obserwowani> uzytkwonicy;
+
+    @OneToMany(mappedBy = "obserwowany")
+    private List<Obserwowani> obserwowani;
+
+    @OneToMany(mappedBy = "uzytkownik")
+    private List<Zgloszenie> zgloszenia;
+
+    @OneToMany(mappedBy = "oskarzony")
+    private List<Zgloszenie> oskarzenia;
+
     private WydzialEnum bierzacyWydzial;
 
     public Uzytkownik(){
@@ -237,5 +249,37 @@ public class Uzytkownik {
 
     public void setPliki(List<Plik> pliki) {
         this.pliki = pliki;
+    }
+
+    public List<Obserwowani> getUzytkwonicy() {
+        return uzytkwonicy;
+    }
+
+    public void setUzytkwonicy(List<Obserwowani> uzytkwonicy) {
+        this.uzytkwonicy = uzytkwonicy;
+    }
+
+    public List<Obserwowani> getObserwowani() {
+        return obserwowani;
+    }
+
+    public void setObserwowani(List<Obserwowani> obserwowani) {
+        this.obserwowani = obserwowani;
+    }
+
+    public List<Zgloszenie> getZgloszenia() {
+        return zgloszenia;
+    }
+
+    public void setZgloszenia(List<Zgloszenie> zgloszenia) {
+        this.zgloszenia = zgloszenia;
+    }
+
+    public List<Zgloszenie> getOskarzenia() {
+        return oskarzenia;
+    }
+
+    public void setOskarzenia(List<Zgloszenie> oskarzenia) {
+        this.oskarzenia = oskarzenia;
     }
 }

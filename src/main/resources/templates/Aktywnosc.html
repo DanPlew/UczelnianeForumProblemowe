@@ -30,7 +30,7 @@
       <div class="navbar-nav">
         <a class="nav-link" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil </a>
         <a class="nav-link" href="/zmianaForum">Forum</a>
-        <a class="nav-link" href="/aktywnosc">Aktywnosc</a>
+        <a class="nav-link active" href="/aktywnosc">Aktywnosc<span class="sr-only">(current)</span></a>
         <a class="nav-link" href="/logout">Wyloguj</a>
       </div>
     </div>
@@ -78,60 +78,33 @@
   <!-- OBRAMOWANIE -->
   <div class="border rounded p-2">
 
-    <!-- AKTUALNY WĄTEK -->
-    <div class="row mt-2">
-      <div class="col">
-        <p class="navbar-brand font-weight-bold" th:text="${'Wątek - ' + biezacyTemat.getWatek().getNazwa() + ' - Temat - ' + biezacyTemat.getNazwa()}"></p>
-      </div>
-      <!-- PRZYCISK COFANIA -->
-      <!-- TEMATLISTA, OPCJAPOWROTUWATEKVIEW -->
-      <div class="col-auto">
-        <a class="btn btn-info btn-sm" th:object="${opcjaPowrotuWatekView}" th:href="@{/watek/{id}(id = ${biezacyTemat.getWatek().getId()})}">Wróć</a>
-      </div>
-    </div>
+    <p class="navbar-brand font-weight-bold">Aktywność</p>
 
     <div class="table-responsive">
     <table class="table">
-      <thead>
-      <tr class="thead-dark">
-        <th scope="col">Eska</th>
-        <th scope="col">Data utworzenia</th>
-        <th scope="col">Wiadomosc</th>
-        <th scope="col">Plik</th>
-        <th scope="col"></th>
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Tworca</th>
+        <th scope="col">Opis</th>
       </tr>
       </thead>
+
       <tbody>
-      <tr th:each="post,i : ${postLista}">
-        <td><a th:href="@{/profil/{id}(id = ${post.uzytkownik.id})}" th:text="${post.getUzytkownik().getLogin()}"></a></td>
-        <td th:text="${post.getDataUtworzenia()}"></td>
-        <td th:text="${post.getWiadomosc()}"></td>
-        <td><a th:if="${post.getPlik() != null}" th:href="@{/plik/pobierz/{id}(id = ${post.getPlik().getId()})}" th:text="${post.plik.getNazwa()}"></a></td>
-        <td th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]') or post.uzytkownik.login.equals(uzytkownik.login)}">
-          <a th:href="@{/post/delete/{id}(id = ${post.id})}">Usuń</a>
-        </td>
+      <tr th:each="temat,i : ${listaTematow}">
+        <td th:text="${i.index+1}"></td>
+        <td><a th:href="@{/temat/{id}(id = ${temat.id})}" th:text="${temat.nazwa}"></a></td>
+        <td><a th:href="@{/profil/{id}(id = ${temat.getUzytkownik().id})}" th:text="${temat.getUzytkownik().imie}"></a></td>
+        <td th:text="${temat.getOpis()}"></td>
       </tr>
       </tbody>
     </table>
-      </div>
+    </div>
 
-    <form class="mt-3" th:action="@{/post/add}" method="post" th:object="${postView}">
-      <div class="form-group">
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{wiadomosc}"></textarea>
-        <input class="d-none" type="text" th:value="${biezacyTemat.getId()}" th:name="idTematu">
-        <select th:field="*{idPliku}" class="col mt-1">
-          <option value="0">Bez pliku</option>
-          <option th:each="plik : ${pliki}" th:value="${plik.id}" th:text="${plik.getNazwa()}"></option>
-        </select>
-        <div class="row justify-content-end mt-1">
-          <div th:if="${wrongPost}" th:text="${wrongPost}" class="alert alert-danger"></div>
-          <button type="submit" class="btn-sm btn-primary btn-sm mr-3">Dodaj post</button>
-        </div>
-      </div>
-    </form>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 </body>
 </html>

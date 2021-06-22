@@ -1,11 +1,13 @@
 package ufp.uczelnianeforumproblemowe.mvc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
@@ -47,6 +49,12 @@ public class WatekController {
         this.wydzialService = wydzialService;
         this.watekProcedureRepository = watekProcedureRepository;
         this.postService = postService;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder){
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(false);
+        webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
     @GetMapping("/watek/{id}")
@@ -102,6 +110,11 @@ public class WatekController {
         opcjaPowrotu.setNazwaRodzica(watek.getNazwa());
         model.addAttribute("opcjaPowrotuWatekView", opcjaPowrotu);
 
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        obserwowani.forEach(uzytkownik1 -> System.out.println(uzytkownik1.getImie()));
+        model.addAttribute("obserwowaniLista", obserwowani);
+
         return "Index";
     }
 
@@ -135,6 +148,11 @@ public class WatekController {
         // Edycja wątku.
         WatekView watekView = new WatekView();
         model.addAttribute("watekView", watekView);
+
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        obserwowani.forEach(uzytkownik1 -> System.out.println(uzytkownik1.getImie()));
+        model.addAttribute("obserwowaniLista", obserwowani);
 
         return "WatekEdycja";
     }
@@ -192,6 +210,11 @@ public class WatekController {
             else return "redirect:/watek/" + watekView.getIdRodzica();
         }
 
+        if(watekView.getNazwa().equals("")){
+            redirectAttributes.addFlashAttribute("failedToAddWatek", "Nazwa nie moze być pusta!");
+            if(watekView.getIdRodzica() == -1) return "redirect:/";
+            else return "redirect:/watek/" + watekView.getIdRodzica();
+        }
         Watek watek = new Watek(watekView.getNazwa());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -30,7 +30,7 @@
       <div class="navbar-nav">
         <a class="nav-link active" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil<span class="sr-only">(current)</span></a>
         <a class="nav-link" href="/zmianaForum">Forum</a>
-        <a class="nav-link" href="#">Moje posty</a>
+        <a class="nav-link" href="/aktywnosc">Aktywnosc</a>
         <a class="nav-link" href="/logout">Wyloguj</a>
       </div>
     </div>
@@ -43,6 +43,19 @@
   <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
+    <div class="dropdown">
+      <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Obserwowani
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <table>
+          <tr th:each="obserwowany,i : ${obserwowaniLista}">
+            <th><a class="dropdown-item" th:href="@{/profil/{id}(id = ${obserwowany.getId()})}" th:text="${obserwowany.getImie()}"></a></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getLogin()}"></span>
@@ -58,35 +71,10 @@
   <div class="row">
     <div class="col">
       <p class="navbar-brand font-weight-bold" th:text="${'Wydział ' + uzytkownik.getBierzacyWydzial() + ' - Profil'}"></p>
+      <a th:if="${czyWZnajomych == false and uzytkownik.getId() != ogladanyUzytkownik.getId()}" th:href="@{/obserwowani/add/{id}(id = ${ogladanyUzytkownik.id})}" class="btn-sm btn-success">Obserwuj</a>
+      <a th:if="${czyWZnajomych == true and uzytkownik.getId() != ogladanyUzytkownik.getId()}" th:href="@{/obserwowani/delete/{id}(id = ${ogladanyUzytkownik.id})}" class="btn-sm btn-danger">Nie obserwuj</a>
     </div>
   </div>
-
-
-  <!-- OBRAMOWANIE -->
-<!--  <div class="border rounded p-2">-->
-<!--    <div class="row">-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${'Eska:' + ogladanyUzytkownik.eska}"></p>-->
-<!--      </div>-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${'Email Uczelniany:' + ogladanyUzytkownik.emailUczelniany}"></p>-->
-<!--      </div>-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${ogladanyUzytkownik.dataRejestracji}"></p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="row d-sm-none">-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${ogladanyUzytkownik.imie}"></p>-->
-<!--      </div>-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${ogladanyUzytkownik.emailPrywatny}"></p>-->
-<!--      </div>-->
-<!--      <div class="col-4">-->
-<!--        <p th:text="${ogladanyUzytkownik.wydzial.nazwa}"></p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
 
 
   <div class="border rounded p-2">
@@ -109,12 +97,13 @@
       <div class="col-4"><p th:text="${'Email prywatny: ' + ogladanyUzytkownik.emailPrywatny}"></p></div>
       <div class="col-4"><p th:text="${'Wydział: ' + ogladanyUzytkownik.wydzial.nazwa}"></p></div>
     </div>
+    <p th:text="${'Ranga: ' + ogladanyUzytkownik.getRanga()}"></p>
     <span>Opis: </span>
     <p th:text="${ogladanyUzytkownik.opis}"></p>
     <hr class="d-none d-sm-flex">
-    <p th:text="${'Ranga: ' + ogladanyUzytkownik.getRanga()}"></p>
 
     <p>Pliki uzytkownika</p>
+    <div class="table-responsive">
     <table class="table">
       <thead>
       <tr>
@@ -133,13 +122,14 @@
       </tr>
       </tbody>
     </table>
+      </div>
     <hr>
     <form th:if="${uzytkownik.login.equals(ogladanyUzytkownik.login)}" method="post" th:action="@{'/plik/add/' + ${ogladanyUzytkownik.id}}" encType="multipart/form-data">
       <div class="form-group">
         <p>Wstaw plik:</p>
         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="pliki" multiple required>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
+      <button type="submit" class="btn-primary btn-sm">Dodaj</button>
     </form>
   </div>
 

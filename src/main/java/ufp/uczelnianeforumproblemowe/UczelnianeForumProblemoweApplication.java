@@ -18,7 +18,7 @@ public class UczelnianeForumProblemoweApplication {
     }
 
     @Bean
-    public CommandLineRunner init(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, WydzialRepository wydzialRepository, WatekRepository watekRepository, TematRepository tematRepository, PostRepository postRepository){
+    public CommandLineRunner init(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, WydzialRepository wydzialRepository, WatekRepository watekRepository, TematRepository tematRepository, PostRepository postRepository, ObserwowaniRepository obserwowaniRepository){
         return args -> {
             Wydzial wydzial1 = new Wydzial(WydzialEnum.Informatyka);
             Wydzial wydzial2 = new Wydzial(WydzialEnum.Grafika);
@@ -43,6 +43,9 @@ public class UczelnianeForumProblemoweApplication {
             uzytkownikRepository.save(uzytkownik1);
             uzytkownikRepository.save(uzytkownik2);
             uzytkownikRepository.save(uzytkownik3);
+
+            Obserwowani obserwowani = new Obserwowani(uzytkownik1, uzytkownik2);
+            obserwowaniRepository.save(obserwowani);
 
             Watek watek1 = new Watek("Projekty");
             Watek watek2 = new Watek("Podprojekty");

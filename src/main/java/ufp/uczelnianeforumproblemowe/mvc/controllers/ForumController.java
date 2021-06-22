@@ -61,20 +61,14 @@ public class ForumController {
         List<Integer> tematyWWydziale = new ArrayList<>();
         wydzialLista.forEach(wydzial -> tematyWWydziale.add(tematService.pobierzWszystkieTematyWedlugWydzialu(wydzial.getNazwa())));
         model.addAttribute("iloscTematowWWydziale", tematyWWydziale);
-//        WydzialView wydzialView = new WydzialView();
-//        model.addAttribute("wydzialView", wydzialView);
+
+        // Lista obserwowanych
+        List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
+        model.addAttribute("obserwowaniLista", obserwowani);
 
         return "ForumChanger";
     }
 
-//    @PostMapping("/zmianaForum")
-//    public String zmienForum(@ModelAttribute("wydzialView") WydzialView wydzialView){
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
-//        uzytkownik.setBierzacyWydzial(wydzialView.getWydzialEnum());
-//        uzytkownikService.zapiszUzytkownika(uzytkownik);
-//        return "redirect:/";
-//    }
 
     @GetMapping("/zmianaForum/{id}")
     public String zmienForum(@PathVariable(name = "id") long id){
