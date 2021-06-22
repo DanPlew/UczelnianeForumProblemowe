@@ -109,7 +109,10 @@ public class TematController {
 
     @GetMapping("/temat/update/{id}")
     public String pobierzWatekEdycja(@PathVariable("id") long id, Model model){
+        // Do pokazywania odpowiednich elementów na końcie admina i moderatora
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String rola = auth.getAuthorities().toString();
+        model.addAttribute("rola", rola);
 
         Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieLoginu(auth.getName());
         uzytkownik.setBierzacyWydzial(uzytkownik.getWydzial().getNazwa());

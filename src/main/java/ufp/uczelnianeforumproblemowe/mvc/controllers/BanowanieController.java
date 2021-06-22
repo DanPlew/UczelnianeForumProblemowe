@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
 import ufp.uczelnianeforumproblemowe.jpa.models.Zgloszenie;
 import ufp.uczelnianeforumproblemowe.jpa.repositories.ZgloszenieRepository;
@@ -53,5 +54,16 @@ public class BanowanieController {
         model.addAttribute("listaZgloszen", zgloszenia);
 
         return "Uzytkownicy";
+    }
+
+    @GetMapping("/administrator/zbanujOdbanuj/{id}")
+    public String zbanujOdbanujUzytkownika(@PathVariable(name = "id") long id){
+        Uzytkownik uzytkownik = uzytkownikService.znajdzUzytkownikaNaPodstawieId(id);
+
+        if(uzytkownik.isCzyZbanowany()) uzytkownik.setCzyZbanowany(false);
+        else uzytkownik.setCzyZbanowany(true);
+        uzytkownikService.zapiszUzytkownika(uzytkownik);
+
+        return "redirect:/administrator/listaUzytkownikow";
     }
 }

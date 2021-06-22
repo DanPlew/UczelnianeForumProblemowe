@@ -28,6 +28,7 @@
     <!-- OPCJE FORUM -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
+        <a th:if="${rola.equals('[ADMINISTRATOR]')}" class="nav-link active" href="/administrator/listaUzytkownikow">Uzytkownicy<span class="sr-only">(current)</span></a>
         <a class="nav-link" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil </a>
         <a class="nav-link" href="/zmianaForum">Forum</a>
         <a class="nav-link" href="/aktywnosc">Aktywnosc</a>
@@ -75,6 +76,7 @@
         <th scope="col">Eska</th>
         <th scope="col">Mail prywatny</th>
         <th scope="col">Ilość zgłoszeń</th>
+        <th scope="col"></th>
       </tr>
       </thead>
 
@@ -117,7 +119,8 @@
           </div>
         </td>
         <td>
-
+          <a class="btn-sm btn-success" th:if="${uzytkownikk.isCzyZbanowany()}" th:href="@{/administrator/zbanujOdbanuj/{id}(id = ${uzytkownikk.id})}">Odbanuj</a>
+          <a class="btn-sm btn-danger" th:if="${!uzytkownikk.isCzyZbanowany()}" th:href="@{/administrator/zbanujOdbanuj/{id}(id = ${uzytkownikk.id})}">Zbanuj</a>
         </td>
       </tr>
       </tbody>

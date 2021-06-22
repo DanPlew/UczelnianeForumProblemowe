@@ -24,6 +24,7 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
+        <a th:if="${rola.equals('[ADMINISTRATOR]')}" class="nav-link" href="/administrator/listaUzytkownikow">Użytkownicy</a>
         <a class="nav-link" th:href="@{/profil/{id}(id = ${uzytkownik.id})}">Profil </a>
         <a class="nav-link active" href="/zmianaForum">Forum<span class="sr-only">(current)</span></a>
         <a class="nav-link" href="/aktywnosc">Aktywnosc</a>

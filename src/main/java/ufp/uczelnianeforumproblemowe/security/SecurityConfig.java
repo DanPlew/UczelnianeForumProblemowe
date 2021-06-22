@@ -44,10 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/administrator/**").hasAuthority(RangaEnum.ADMINISTRATOR.name())
+                .antMatchers("/watek/delete/**").hasAnyAuthority(RangaEnum.ADMINISTRATOR.name(), RangaEnum.MODERATOR.name())
+                .antMatchers("/watek/update/**").hasAnyAuthority(RangaEnum.ADMINISTRATOR.name(), RangaEnum.MODERATOR.name())
+                .antMatchers("/watek/add/**").hasAnyAuthority(RangaEnum.ADMINISTRATOR.name(), RangaEnum.MODERATOR.name())
                 .antMatchers("/rejestracja").permitAll()
                 .antMatchers("/wyslanieTokenu").permitAll()
                 .antMatchers("/aktywacjaKonta").permitAll()
-                .antMatchers("/getAllUzytkownik").hasAuthority(RangaEnum.ADMINISTRATOR.name())
                 .antMatchers("/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
