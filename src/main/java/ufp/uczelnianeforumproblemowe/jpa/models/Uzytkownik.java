@@ -31,6 +31,9 @@ public class Uzytkownik {
     @Column(name = "czyKontoAktywne")
     private boolean aktywnoscKonta;
 
+    @Column(name = "czyKontoZbanowane")
+    private boolean czyZbanowany;
+
     @Column(unique = true)
     private String emailUczelniany;
 
@@ -79,6 +82,7 @@ public class Uzytkownik {
         this.dataRejestracji = Date.valueOf(LocalDate.now());
         this.ranga = RangaEnum.UZYTKOWNIK;
         this.aktywnoscKonta = false;
+        this.czyZbanowany = false;
     }
 
     public Uzytkownik(UzytkownikView uzytkownikView){
@@ -92,6 +96,7 @@ public class Uzytkownik {
         this.dataRejestracji = Date.valueOf(LocalDate.now());
         this.ranga = RangaEnum.UZYTKOWNIK;
         this.aktywnoscKonta = false;
+        this.czyZbanowany = false;
     }
 
     public Uzytkownik(String login, String haslo, String imie, RangaEnum ranga, String emailUczelniany, String emailPrywatny){
@@ -105,6 +110,7 @@ public class Uzytkownik {
 
         this.dataRejestracji = Date.valueOf(LocalDate.now());
         this.aktywnoscKonta = true;
+        this.czyZbanowany = false;
     }
 
     public long getId() {
@@ -281,5 +287,17 @@ public class Uzytkownik {
 
     public void setOskarzenia(List<Zgloszenie> oskarzenia) {
         this.oskarzenia = oskarzenia;
+    }
+
+    public boolean isCzyZbanowany() {
+        return czyZbanowany;
+    }
+
+    public void setCzyZbanowany(boolean czyZbanowany) {
+        this.czyZbanowany = czyZbanowany;
+    }
+
+    public int getLiczbaZgloszen(){
+        return getOskarzenia().size();
     }
 }

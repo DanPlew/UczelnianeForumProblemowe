@@ -69,7 +69,6 @@ public class StronaGlownaController {
 
         // Lista obserwowanych
         List<Uzytkownik> obserwowani = uzytkownikService.pobierzObserwujacych(uzytkownik.getId());
-        obserwowani.forEach(uzytkownik1 -> System.out.println(uzytkownik1.getImie()));
         model.addAttribute("obserwowaniLista", obserwowani);
         return "Index";
     }

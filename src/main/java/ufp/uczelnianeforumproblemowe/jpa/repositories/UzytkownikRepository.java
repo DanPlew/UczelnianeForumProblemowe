@@ -18,10 +18,14 @@ public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     Uzytkownik findByImie(String imie);
 
     @Query(value = "select count(uzytkownik.login) from Uzytkownik uzytkownik inner join Wydzial wydzial on wydzial.id = uzytkownik.wydzial.id where wydzial.nazwa = ?1")
-    Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum);
+    Integer pobierzLiczbeUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 
     @Query(value = "select uzytkownik from Uzytkownik uzytkownik " +
             "inner join Obserwowani obserwowani on uzytkownik.id = obserwowani.obserwowany.id " +
             "where obserwowani.uzytkownik.id = ?1")
     List<Uzytkownik> pobierzObserwujacych(long id);
+
+    @Query(value = "select DISTINCT(uzytkownik) from Uzytkownik uzytkownik " +
+            "inner join Zgloszenie  zgloszenie on uzytkownik.id = zgloszenie.oskarzony.id")
+    List<Uzytkownik> pobierzListeZgloszonychOsob();
 }

@@ -41,7 +41,8 @@ public class UzytkownikDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !uzytkownik.isCzyZbanowany();
+        //        return true;
     }
 
     @Override

@@ -32,27 +32,42 @@ public class UzytkownikService implements UzytkownikServiceInterface ,Sprawdzeni
         return uzytkownikRepository.findByEmailUczelniany(emailUczelniany);
     }
 
-    public void zapiszUzytkownika(Uzytkownik uzytkownik){
-        uzytkownikRepository.save(uzytkownik);
-    }
-
-
+    @Override
     public Uzytkownik znajdzUzytkownikaNaPodstawieMailaPrywatnego(String emailPrywatny){
         return uzytkownikRepository.findByEmailPrywatny(emailPrywatny);
     }
 
+    @Override
     public Uzytkownik znajdzUzytkownikaNaPodstawieId(long id){
         return uzytkownikRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum) {
-        return uzytkownikRepository.pobierzWszystkichUzytkownikowNaPodstawieWydzialu(wydzialEnum);
+    public void zapiszUzytkownika(Uzytkownik uzytkownik){
+        uzytkownikRepository.save(uzytkownik);
     }
 
+    @Override
+    public Integer pobierzWszystkichUzytkownikowNaPodstawieWydzialu(WydzialEnum wydzialEnum) {
+        return uzytkownikRepository.pobierzLiczbeUzytkownikowNaPodstawieWydzialu(wydzialEnum);
+    }
+
+    @Override
+    public List<Uzytkownik> pobierzListeZgloszonychOsob() {
+        return uzytkownikRepository.pobierzListeZgloszonychOsob();
+    }
+
+    @Override
+    public List<Uzytkownik> pobierzWszystkichUzytkownikow(){
+        return uzytkownikRepository.findAll();
+    }
+
+    @Override
     public List<Uzytkownik> pobierzObserwujacych(long id){
         return uzytkownikRepository.pobierzObserwujacych(id);
     }
+
+
 
     @Override
     public boolean sprawdzenieKontaNaPodstawieLoginu(String login) {
