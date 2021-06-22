@@ -21,6 +21,7 @@ import ufp.uczelnianeforumproblemowe.mvc.modelViews.UzytkownikView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
+@CrossOrigin
 @Controller
 public class RejestracjaController {
 

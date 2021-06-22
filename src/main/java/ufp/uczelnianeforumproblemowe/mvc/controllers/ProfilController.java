@@ -23,6 +23,7 @@ import ufp.uczelnianeforumproblemowe.mvc.modelViews.ZgloszenieView;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Controller
 public class ProfilController {
 
