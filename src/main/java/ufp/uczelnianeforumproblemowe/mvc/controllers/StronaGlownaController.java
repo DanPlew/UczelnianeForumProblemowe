@@ -1,12 +1,10 @@
 package ufp.uczelnianeforumproblemowe.mvc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ufp.uczelnianeforumproblemowe.jpa.models.Temat;
 import ufp.uczelnianeforumproblemowe.jpa.models.Uzytkownik;
@@ -16,9 +14,7 @@ import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
 import ufp.uczelnianeforumproblemowe.logic.watekService.WatekService;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.WatekView;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @CrossOrigin
