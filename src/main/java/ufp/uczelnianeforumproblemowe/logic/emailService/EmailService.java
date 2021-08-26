@@ -20,13 +20,13 @@ public class EmailService implements WysylanieEmailInterface{
     @Override
     @Async
     public void wyslij(String doKogo, String token)throws Exception{
-        String link = "http://localhost:8080/aktywacjaKonta?token=" + token;
+        String link = "http://uczelnianeforumproblemowe.herokuapp.com/aktywacjaKonta?token=" + token;
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
         mimeMessageHelper.setText(zbudujMaila(doKogo, link), true);
         mimeMessageHelper.setTo(doKogo);
         mimeMessageHelper.setSubject("Potwierdz email z Uczelnianego Forum Problemowego");
-        mimeMessageHelper.setFrom("UczelnianeForumProblemowe@example.com");
+        mimeMessageHelper.setFrom("uczelniane.forum.problemowe.mail@gmail.com ");
         mailSender.send(mimeMessage);
     }
 
