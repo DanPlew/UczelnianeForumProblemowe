@@ -1,8 +1,11 @@
 package ufp.uczelnianeforumproblemowe.mvc.modelViews;
 
-import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
-public class PostView {
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
+public class PostView implements Serializable {
 
     private long idTematu;
 
@@ -10,6 +13,8 @@ public class PostView {
     private String wiadomosc;
 
     private long idPliku;
+
+    public PostView(){ }
 
     public long getIdTematu() {
         return idTematu;

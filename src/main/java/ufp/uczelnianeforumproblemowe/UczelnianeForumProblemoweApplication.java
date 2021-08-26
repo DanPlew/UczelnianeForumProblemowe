@@ -88,3 +88,8 @@ public class UczelnianeForumProblemoweApplication {
         };
     }
 }
+
+// TODO: 1 Poprawienie zmieniania forum..
+// TODO: 2 Wyszukanie studenta po nazwie.
+// TODO: 3 Przyznanie rangi studentowi.
+// TODO: 4 Zrobienie rangi superadministratora

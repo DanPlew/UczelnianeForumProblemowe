@@ -41,10 +41,11 @@
 <!-- ELEMENTY POD NAWIGACJĄ -->
 <div class="container mt-5 pt-4">
 
-  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME, RANGA I LISTĄ OBSERWUJĄCYCH -->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
     <div class="dropdown">
+      <!-- LISTA OBSERWUJĄCYCH -->
       <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Obserwowani
       </button>
@@ -57,6 +58,7 @@
       </div>
     </div>
 
+    <!-- IMIE I RANGA -->
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getImie()}"></span>
@@ -67,8 +69,8 @@
     </div>
   </div>
 
-  <!-- BIERZĄCE FORUM KTÓRE PRZEGLĄDA UŻYTKOWNIK -->
-  <!-- UZYTKOWNIK -->
+
+  <!-- OBSERWOWANIE -->
   <div class="row">
     <div class="col">
       <p class="navbar-brand font-weight-bold" th:text="${'Wydział ' + uzytkownik.getBierzacyWydzial() + ' - Profil'}"></p>
@@ -77,8 +79,11 @@
     </div>
   </div>
 
+
   <div class="row justify-content-end" th:if="${uzytkownik.getId() != ogladanyUzytkownik.getId()}">
+    <!-- ALERT -->
     <div th:if="${wrongZgloszenie}" th:text="${wrongZgloszenie}" class="alert alert-danger"></div>
+    <!-- ZGŁOSZENIE -->
     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Zgłoś</button>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -109,6 +114,7 @@
   </div>
 
 
+  <!-- DANE UZYTKOWNIKA -->
   <div class="border rounded p-2">
     <div class="d-sm-none">
       <p th:text="${'Eska: ' + ogladanyUzytkownik.eska}"></p>
@@ -137,7 +143,7 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">Id</th>
+        <th scope="col">L.p</th>
         <th scope="col">Nazwa</th>
         <th scope="col">Link do pobrania</th>
         <th></th>
@@ -155,6 +161,7 @@
       </div>
     <hr>
 
+    <!-- DODANIE PLIKU -->
     <div th:if="${fileException}" th:text="${fileException}" class="alert alert-danger"></div>
     <form th:if="${uzytkownik.login.equals(ogladanyUzytkownik.login)}" method="post" th:action="@{'/plik/add/' + ${ogladanyUzytkownik.id}}" encType="multipart/form-data">
       <div class="form-group">

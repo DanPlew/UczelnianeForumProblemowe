@@ -41,10 +41,11 @@
 <!-- ELEMENTY POD NAWIGACJĄ -->
 <div class="container mt-5 pt-4">
 
-  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME, RANGA I LISTA OBSERWUJĄCYCH -->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
     <div class="dropdown">
+      <!-- PRZYCISK ROZWIJANY DO LISTY OBSERWUJĄCYCH -->
       <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Obserwowani
       </button>
@@ -57,6 +58,7 @@
       </div>
     </div>
 
+    <!-- IMIE I RANGA -->
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getImie()}"></span>
@@ -74,7 +76,6 @@
       <p class="navbar-brand font-weight-bold" th:text="${'Wydział ' + uzytkownik.getBierzacyWydzial()}"></p>
     </div>
   </div>
-
 
   <!-- OBRAMOWANIE -->
   <div class="border rounded p-2">
@@ -100,7 +101,7 @@
     <div class="table-responsive">
   <table class="table">
     <tr class="thead-dark">
-      <th>Id</th>
+      <th>L.p</th>
       <th>Nazwa</th>
       <th>Twórca</th>
       <th>Data Utworzenia</th>
@@ -126,6 +127,7 @@
   <!-- FORMULARZ DODAWANIA NOWYCH WĄTKÓW -->
   <!-- ROLA, WATEKVIEW -->
     <div class="row justify-content-end mr-2">
+      <!-- ALERTY -->
       <div th:if="${failedToAddWatek}" th:text="${failedToAddWatek}" class="alert alert-danger"></div>
       <div th:if="${watekNotFound}" th:text="${watekNotFound}" class="alert alert-danger"></div>
     <button th:if="${rola.equals('[MODERATOR]') or rola.equals('[ADMINISTRATOR]')}" type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Dodaj wątek</button>
@@ -165,7 +167,7 @@
     <div class="table-responsive">
   <table class="table">
     <tr class="thead-dark">
-      <th>Id</th>
+      <th>L.p</th>
       <th>Nazwa</th>
       <th>Twórca</th>
       <th>Data Utworzenia</th>
@@ -193,6 +195,7 @@
   <!-- FORMULARZ DODAWANIA NOWYCH TEMATÓW JEŚLI TO NIE SĄ WĄTKI GŁÓWNE -->
   <!-- ROLA, TEMATLISTA, TEMATVIEW -->
     <div class="row justify-content-end mr-2">
+      <!-- ALERTY -->
       <div th:if="${wrongNameForTemat}" th:text="${wrongNameForTemat}" class="alert alert-danger"></div>
       <div th:if="${tematNotFound}" th:text="${tematNotFound}" class="alert alert-danger"></div>
       <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat">Dodaj temat</button>
@@ -226,9 +229,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>

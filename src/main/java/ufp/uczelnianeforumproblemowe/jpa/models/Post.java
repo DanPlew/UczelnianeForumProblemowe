@@ -10,6 +10,8 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(length = 2000)
     private String wiadomosc;
     private java.sql.Date dataUtworzenia;
 

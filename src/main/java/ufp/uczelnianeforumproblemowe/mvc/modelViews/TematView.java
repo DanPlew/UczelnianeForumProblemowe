@@ -1,6 +1,5 @@
 package ufp.uczelnianeforumproblemowe.mvc.modelViews;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 

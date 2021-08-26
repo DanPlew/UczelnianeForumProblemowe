@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface TematRepository extends JpaRepository<Temat, Long> {
 
+    List<Temat> getTematByUzytkownik(Uzytkownik uzytkownik);
+
     @Query(value = "select temat from Temat temat inner join Watek watek on watek.id = temat.watek.id where watek.id = ?1")
     List<Temat> pobierzWszystkieTematyNaPodstawieWatku(long idWatku);
 
@@ -20,8 +22,6 @@ public interface TematRepository extends JpaRepository<Temat, Long> {
             "inner join Wydzial wydzial on wydzial.id = watek.wydzial.id " +
             "where wydzial.nazwa = ?1")
     Integer pobierzWszystkieTematyWedlugWydzialu(WydzialEnum wydzialEnum);
-
-    List<Temat> getTematByUzytkownik(Uzytkownik uzytkownik);
 
     @Query(value = "select temat from Temat temat " +
             "inner join Post post on temat.id = post.temat.id " +

@@ -41,10 +41,11 @@
 <!-- ELEMENTY POD NAWIGACJĄ -->
 <div class="container mt-5 pt-4">
 
-  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME, RANGA I LISTA OBSERWUJĄCYCH-->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
     <div class="dropdown">
+      <!-- PRZYCISK ROZWIJANY Z LISTĄ OBSERWUJĄCYCH -->
       <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Obserwowani
       </button>
@@ -57,6 +58,7 @@
       </div>
     </div>
 
+    <!-- IMIE I RANGA -->
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getImie()}"></span>
@@ -75,17 +77,17 @@
     </div>
   </div>
 
-
   <!-- OBRAMOWANIE -->
   <div class="border rounded p-2">
 
     <p class="navbar-brand font-weight-bold">Aktywność</p>
 
+    <!-- TABELA Z NASZYMI AKTYWNOŚCIAMI -->
     <div class="table-responsive">
     <table class="table">
       <thead class="thead-dark">
       <tr>
-        <th scope="col">Id</th>
+        <th scope="col">L.p</th>
         <th scope="col">Nazwa</th>
         <th scope="col">Tworca</th>
         <th scope="col">Opis</th>

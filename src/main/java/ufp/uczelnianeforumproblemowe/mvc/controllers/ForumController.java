@@ -50,7 +50,7 @@ public class ForumController {
         model.addAttribute("uzytkownik", uzytkownik);
 
         List<Wydzial> wydzialLista = wydzialService.pobierzWszystkieWydzialy();
-        wydzialLista.removeIf(wydzial -> wydzial.getNazwa() == uzytkownik.getBierzacyWydzial());
+//        wydzialLista.removeIf(wydzial -> wydzial.getNazwa() == uzytkownik.getBierzacyWydzial());
         model.addAttribute("wydzialy", wydzialLista);
 
         List<Integer> watkiWwydziale = new ArrayList<>();

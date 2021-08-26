@@ -12,6 +12,8 @@ public class Zgloszenie {
     private long id;
 
     private java.sql.Date dataZgloszenia;
+
+    @Column(length = 2000)
     private String powodZgloszenia;
 
     @ManyToOne

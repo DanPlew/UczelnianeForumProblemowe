@@ -36,10 +36,11 @@
 
 <div class="container mt-5 pt-4">
 
-  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME, RANGA I LISTA OBSERWUJĄCYCH -->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
     <div class="dropdown">
+      <!-- PRZYCISK ROZWIJANY Z LISTĄ OBSERWUJĄCYCH -->
       <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Obserwowani
       </button>
@@ -52,6 +53,7 @@
       </div>
     </div>
 
+    <!-- IMIE I RANGA -->
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getImie()}"></span>
@@ -68,16 +70,7 @@
     </div>
   </div>
 
-<!--  <form th:action="@{/zmianaForum}" method="post" th:object="${wydzialView}">-->
-<!--    <div class="form-group">-->
-<!--      <label>Dostepne wydzialy: </label>-->
-<!--      <select th:field="*{wydzialEnum}">-->
-<!--        <option th:each="wydzial : ${wydzialy}" th:value="${wydzial.getNazwa()}" th:text="${wydzial.getNazwa()}"></option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <button type="submit" class="btn btn-primary">Zmień forum</button>-->
-<!--  </form>-->
-
+  <!-- TABLE Z FORUM -->
   <div class="table-responsive">
   <table class="table">
     <thead>

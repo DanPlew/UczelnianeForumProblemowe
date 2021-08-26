@@ -41,10 +41,11 @@
 <!-- ELEMENTY POD NAWIGACJĄ -->
 <div class="container mt-5 pt-4">
 
-  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME I RANGA -->
+  <!-- INFORMACJE O UŻYTKOWNIKU, JEGO NICKNAME, RANGA I LISTA OBSERWUJACYCH-->
   <!-- UZYTKOWNIK -->
   <div class="row justify-content-end">
     <div class="dropdown">
+      <!-- LISTA OBSERWUJACYCH -->
       <button class="btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Obserwowani
       </button>
@@ -57,6 +58,7 @@
       </div>
     </div>
 
+    <!-- IMIE I RANGA -->
     <div class="col-auto mr-1">
       <i class="fas fa-user"></i>
       <span th:object="${uzytkownik}" th:text="${uzytkownik.getImie()}"></span>
@@ -91,6 +93,7 @@
       </div>
     </div>
 
+    <!-- LISTA POSTOW -->
     <div class="table-responsive">
     <table class="table">
       <thead>
@@ -116,6 +119,7 @@
     </table>
       </div>
 
+    <!-- FORMULARZ POSTOW -->
     <form class="mt-3" th:action="@{/post/add}" method="post" th:object="${postView}">
       <div class="form-group">
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{wiadomosc}"></textarea>

@@ -12,12 +12,19 @@ import java.util.List;
 public interface WatekRepository extends JpaRepository<Watek, Long> {
     Watek findByNazwa(String nazwaWatku);
 
-    @Query(value = "select watek from Watek watek inner join Wydzial wydzial on wydzial.id = watek.wydzial.id where wydzial.nazwa = ?1 and watek.parentWatek is null ")
+    @Query(value = "select watek from Watek watek " +
+            "inner join Wydzial wydzial on wydzial.id = watek.wydzial.id " +
+            "where wydzial.nazwa = ?1 and watek.parentWatek is null ")
     List<Watek> pobierzWszystkieWatkiGlowneNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 
-    @Query(value = "select watek from Watek watek inner join Wydzial wydzial on wydzial.id = watek.wydzial.id where wydzial.nazwa = ?1 and watek.parentWatek.id = ?2")
+    @Query(value = "select watek from Watek watek " +
+            "inner join Wydzial wydzial on wydzial.id = watek.wydzial.id " +
+            "where wydzial.nazwa = ?1 and watek.parentWatek.id = ?2")
     List<Watek> pobierzWszystkiePodWatkiNaPodstawieRodzica(WydzialEnum wydzialEnum, long idRodzica);
 
-    @Query(value = "select count(watek.nazwa) from Watek watek inner join Wydzial wydzial on wydzial.id = watek.wydzial.id where wydzial.nazwa = ?1")
+    @Query(value = "select count(watek.nazwa) from Watek watek " +
+            "inner join Wydzial wydzial on wydzial.id = watek.wydzial.id " +
+            "where wydzial.nazwa = ?1")
     Integer pobierzWszystkieWatkiNaPodstawieWydzialu(WydzialEnum wydzialEnum);
 }
+

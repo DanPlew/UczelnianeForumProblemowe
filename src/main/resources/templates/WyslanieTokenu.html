@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<!-- NAWIGACJA -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top">
   <div class="container">
     <a class="navbar-brand px-3 font-weight-bold widocznoscDuza" href="/"><i class="fas fa-university"></i> Uczelniane Forum Problemowe</a>
@@ -34,11 +35,13 @@
   <div class="row">
     <div class="col-md-12">
 
+      <!-- ALERTY -->
       <div th:if="${successSendingToken}" th:text="${successSendingToken}" class="alert alert-success">
       </div>
       <div th:if="${failerSendingToken}" th:text="${failerSendingToken}" class="alert alert-danger">
       </div>
 
+      <!-- FORMULARZ WYSYLANIA TOKENU -->
       <form th:action="@{/wyslanieTokenu}" method="post" th:object="${uzytkownikView}">
         <div class="form-group">
           <label for="emailPrywatny">Email prywatny*</label>

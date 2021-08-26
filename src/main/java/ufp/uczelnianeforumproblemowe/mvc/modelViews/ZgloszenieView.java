@@ -6,6 +6,7 @@ public class ZgloszenieView {
 
     @Size(max = 2000, message = "Zgłoszenie max 2000 znaków!")
     private String wiadomoscZgloszenia;
+
     private long idUzytkownik;
     private long idOskarzony;
 

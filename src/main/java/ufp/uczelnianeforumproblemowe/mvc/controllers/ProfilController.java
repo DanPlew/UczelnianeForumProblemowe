@@ -20,6 +20,7 @@ import ufp.uczelnianeforumproblemowe.logic.plikService.PlikService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.ZgloszenieView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,9 @@ public class ProfilController {
     }
 
     @PostMapping("/zgloszenie/add")
-    public String zglosUzytkownika(@ModelAttribute("zgloszenieView") ZgloszenieView zgloszenieView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String zglosUzytkownika(@ModelAttribute("zgloszenieView") @Valid ZgloszenieView zgloszenieView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+
+
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("wrongZgloszenie","Zgloszenie nie  moze być dłuższe niż 2000 znaków!");
             return "redirect:/profil/" + zgloszenieView.getIdOskarzony();

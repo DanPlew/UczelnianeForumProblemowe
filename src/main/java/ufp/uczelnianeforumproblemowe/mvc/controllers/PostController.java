@@ -17,6 +17,8 @@ import ufp.uczelnianeforumproblemowe.logic.tematService.TematService;
 import ufp.uczelnianeforumproblemowe.logic.uzytkownikService.UzytkownikService;
 import ufp.uczelnianeforumproblemowe.mvc.modelViews.PostView;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @Controller
 public class PostController {
@@ -37,7 +39,7 @@ public class PostController {
     }
 
     @PostMapping("/post/add")
-    public String dodajPost(@ModelAttribute("postView")PostView postView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String dodajPost(@ModelAttribute("postView")@Valid PostView postView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("wrongPost","Wiadomość jest za długa.. Max 2000 znaków.");

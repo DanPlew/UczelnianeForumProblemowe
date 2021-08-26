@@ -76,7 +76,7 @@ public class TematController {
     }
 
     @PostMapping("/temat/add")
-    public String dodajNowyTemat(@ModelAttribute @Valid TematView tematView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String dodajNowyTemat(@ModelAttribute("tematView") @Valid TematView tematView, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się od 5 do 50 znakow a opis do 200 znakow!");
@@ -124,7 +124,7 @@ public class TematController {
         // Do którego wątku chcemy przypisać edytowany temat.
         Temat temat = tematService.znajdzTematPoId(id);
         List<Watek> wszystkieWatki = watekService.pobierzWszystkieWatki();
-//        wszystkieWatki.removeIf(watek -> watek.getId() == temat.getWatek().getId());
+        // wszystkieWatki.removeIf(watek -> watek.getId() == temat.getWatek().getId());
         model.addAttribute("wszystkieWatki", wszystkieWatki);
 
         // Informacje na temat edytowanego Tematu.
@@ -151,6 +151,11 @@ public class TematController {
             model.addAttribute("tematView", tematView);
             redirectAttributes.addFlashAttribute("tematNotFound","Nie ma takiego tematu..");
             return "redirect:/";
+        }
+
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("wrongNameForTemat","Nazwa musi zawierać się od 5 do 50 znakow a opis do 200 znakow!");
+            return "redirect:/temat/update/" + tematView.getId();
         }
 
 
