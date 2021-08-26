@@ -86,6 +86,6 @@ public class UzytkownikService implements UzytkownikServiceInterface ,Sprawdzeni
 
     @Override
     public boolean sprawdzenieKontaNaPodstawieImienia(String imie) {
-        return uzytkownikRepository.findByLogin(imie) != null ? true : false;
+        return uzytkownikRepository.findByImie(imie) != null ? true : false;
     }
 }
